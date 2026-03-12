@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">   
+    <title>Projeto login</title>
+    <link rel="stylesheet" href="estilo/style.css">
+</head>
+<body>
+    <section id="conteiner">       
+        <form action="" method="post" >
+            <h1>Login</h1>
+            <div class="input-login">           
+                <input type="email" name="" id="texto"  placeholder="Username"     autocomplete="username" required>
+                <p class="erro" style="color: white;"></p>
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-login">
+                <input type="password" name="" id="senha" placeholder="Password" autocomplete="current-password" required>
+                <i class="fa-solid fa-lock" class="icon"></i>
+            </div>
+
+            <div class="lembrar-senha">                
+                <div class="left">
+                    <input type="checkbox" name="" id="icheckbox">
+                    <label for="icheckbox">Remember me</label>
+                </div>
+                <a href="#">forgot password?</a>
+            </div>
+
+            <button type="submit">Login</button>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="#">Register</a></p>
+            </div>
+        </form>
+    </section>
+    <script src="script/script.js"></script>
+</body>
+</html>
