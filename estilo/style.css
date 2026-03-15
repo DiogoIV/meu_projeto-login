@@ -67,7 +67,7 @@ div.input-login {
 
 div.input-login input {
     background-color: transparent;
-    border: 2px solid var(--border);
+    border: 2px solid var(--background);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 20px;
     padding: 10px;
