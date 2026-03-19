@@ -40,11 +40,11 @@ section#conteiner {
     align-items: center;
    
     background-color: transparent;
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    width: 420px;
+    width: 380px;
     padding: 20px 10px; 
 }
 
@@ -67,8 +67,11 @@ div.input-login {
 
 div.input-login input {
     background-color: transparent;
-    border: 2px solid var(--background);
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid var(--primary);
+
+    font-size: 15px;
+    
+    box-shadow: rgba(0, 0, 0, 0.80) 0px 5px 15px;
     border-radius: 20px;
     padding: 10px;
     margin: 20px 0px;
@@ -87,8 +90,9 @@ div.input-login input {
 }
 
 .input-login input::placeholder {
-    color: rgba(245, 245, 245, 0.761);
+    color: rgba(245, 245, 245, 0.701);
     padding: 10px;
+    text-shadow: 2px 0px 2px rgba(0, 0, 0, 0.35) ;
 }
 
 
@@ -104,4 +108,43 @@ div.lembrar-senha > a {
     text-decoration: none;
     color: var(--white);
 }
+
+button.login {
+    display: block;
+    padding: 10px;
+    width: 200px;
+
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: var(--primary);
+    box-shadow: rgba(0, 0, 0, 0.80) 0px 5px 15px;
+    color: white;
+    border:  2px solid var(--primary);
+    margin: 10px auto;
+}
+
+.register-link p {
+    display: block;
+    margin-left: 30px;
+}
+
+.register-link a {
+    color: white;
+    text-decoration: none;
+    
+}
+
+.register-link a:hover, .lembrar-senha a:hover {
+    text-decoration: underline;
+}
+
+/*Media*/
+
+@media (max-width: 398px) {
+    section#conteiner {
+        width: 290px;
+        
+    }
+}
+
 
