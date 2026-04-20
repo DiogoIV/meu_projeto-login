@@ -57,7 +57,7 @@ form {
     width: 80%;
 }
 
-div.input-login {
+div.input-login, .input-register {
     position: relative;
     width: 100%;
     
@@ -65,7 +65,7 @@ div.input-login {
 
 /* rgba(237, 233, 233, 0.603) */
 
-div.input-login input {
+div.input-login input, div.input-register input {
     background-color: transparent;
     border: 2px solid var(--primary);
 
@@ -89,7 +89,7 @@ div.input-login input {
     
 }
 
-.input-login input::placeholder {
+.input-login input::placeholder, .input-register input::placeholder {
     color: rgba(245, 245, 245, 0.701);
     padding: 10px;
     text-shadow: 2px 0px 2px rgba(0, 0, 0, 0.35) ;
@@ -98,7 +98,7 @@ div.input-login input {
 
 
 
-div.lembrar-senha{
+div.lembrar-senha, div.termos{
     display: flex;
     justify-content: space-between;
     
@@ -109,7 +109,7 @@ div.lembrar-senha > a {
     color: var(--white);
 }
 
-button.login {
+button.login, button.register {
     display: block;
     padding: 10px;
     width: 200px;

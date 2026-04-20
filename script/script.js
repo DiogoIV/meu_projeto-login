@@ -1,4 +1,4 @@
-const inputs = document.querySelectorAll(".input-login input");
+const inputs = document.querySelectorAll("section#conteiner input");
 
 inputs.forEach(input => {
     input.addEventListener("invalid", (e)=>{
