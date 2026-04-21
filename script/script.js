@@ -1,12 +1,14 @@
 const inputs = document.querySelectorAll("section.conteiner input");
 const conteiner = document.querySelector('.conteiner')
-const loginLink = document.querySelector('#btn_login')
-const registerLink = document.querySelector('#btn_register')
+const Linkregister = document.querySelector('#btn_register')
+const Linklogin = document.querySelector('#btn_login')
 
-registerLink.addEventListener('click', ()=> {
+
+
+Linkregister.addEventListener('click', ()=> {
     conteiner.classList.add('active')
 })
-loginLink.addEventListener('click', ()=> {
+Linklogin.addEventListener('click', ()=> {
     conteiner.classList.remove('active')
 })
 

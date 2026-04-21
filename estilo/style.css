@@ -24,6 +24,7 @@ body {
     align-items: center;
     justify-content: center;
 
+    
     min-height: 100dvh;
     width: 100%;
     overflow: hidden;
@@ -41,7 +42,7 @@ section.conteiner {
     justify-content: center;
     
 
-    
+   overflow: hidden;
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
@@ -54,31 +55,40 @@ section.conteiner {
     transition: height .5s ease;
     
 }
-.conteiner.active{
+
+.conteiner.active {
     height: 520px;
+}
+
+.conteiner .form_login {
+    transition: transform .50s ease;
+    transform: translate(0);
+}
+
+
+
+.conteiner.active .form_login{
+    transition: none;
+    transform: translate(-400px);
     
 }
 
-.conteiner form.form_login {
-    transition: transform .18s ease;
-    transform: translate(0);
-}
 
-.conteiner.active form.form_login {
+
+.conteiner .form_register{
     transition: none;
-    transform: translateX(-400px);
-}
-
-.conteiner form.form_register {
     position: absolute;
-    transform: none;
     transform: translateX(400px);
 }
 
-.conteiner.active form.form_register {
-    transition: transform .18s ease;
+.conteiner.active .form_register{
+    transition: transform .50s ease;
     transform: translate(0);
+    
 }
+
+
+
 .conteiner h1{
     text-align: center;
     margin-top: 20px;
