@@ -34,21 +34,52 @@ body {
     color: rgb(255, 255, 255);
 }
 
-section#conteiner {
+section.conteiner {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-   
+    justify-content: center;
+    
+
+    
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     width: 380px;
+    height: 400px;
+
     padding: 20px 10px; 
+    transition: height .5s ease;
+    
+}
+.conteiner.active{
+    height: 520px;
+    
 }
 
-#conteiner h1{
+.conteiner form.form_login {
+    transition: transform .18s ease;
+    transform: translate(0);
+}
+
+.conteiner.active form.form_login {
+    transition: none;
+    transform: translateX(-400px);
+}
+
+.conteiner form.form_register {
+    position: absolute;
+    transform: none;
+    transform: translateX(400px);
+}
+
+.conteiner.active form.form_register {
+    transition: transform .18s ease;
+    transform: translate(0);
+}
+.conteiner h1{
     text-align: center;
     margin-top: 20px;
 }
@@ -56,6 +87,9 @@ section#conteiner {
 form {
     width: 80%;
 }
+
+
+
 
 div.input-login, .input-register {
     position: relative;
