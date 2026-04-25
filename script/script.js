@@ -3,6 +3,7 @@ const el = {
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
 
+    inputs: document.querySelectorAll('form_registro'),
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #senha'),
@@ -30,13 +31,16 @@ function validarformulario(input, regex) {
 
 
     if (valor !== valor.trim()) {
-        return input.style.border = "2px solid red"
+        input.style.border = "2px solid red"
+        return false
     }
     
     if (regex.test(valor)) {
         input.style.border = "2px solid green"
+        return true
     } else {
         input.style.border = "2px solid red"
+        return false
     }
 }
 
@@ -68,32 +72,33 @@ function avisodoformulario() {
 el.button_register.addEventListener('click', async (ele) => {
     ele.preventDefault()
 
-    const usuariok = el.input_usuarioRegistro.addEventListener('input', () =>
-        validarformulario(el.input_usuarioRegistro, regexs.regx_usuario)
-    )
-    const emailok = el.input_emailRegistro.addEventListener('input', () =>
-        validarformulario(el.input_emailRegistro, regexs.regx_email)
-    )
-    const senhaok = el.input_senhaRegistro.addEventListener('input', () =>
-        validarformulario(el.input_senhaRegistro, regexs.regx_senha)
-    )
+    const usuariok = validarformulario(el.input_usuarioRegistro, regexs.regx_usuario)
+    const emailok = validarformulario(el.input_emailRegistro, regexs.regx_email)
+    const senhaok = validarformulario(el.input_senhaRegistro, regexs.regx_senha)
 
     if(!usuariok||!emailok|| !senhaok) {
         return alert('preencha os dados corretamente')
     } 
-
-    const res = awaitfetch('http:://localhost:3000/usuario', {
-        method:'POST',
-        Headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            usuario: el.input_usuarioRegistro.value,
-            email: el.input_emailRegistro.value,
-            senha: el.input_senhaRegistro.value
-             
+    try {    
+        const res = await fetch('http://localhost:3000/usuarios', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                usuario: el.input_usuarioRegistro.value,
+                email: el.input_emailRegistro.value,
+                senha: el.input_senhaRegistro.value
+                 
+            })
         })
-    })
+        const dados = await res.json()
+        alert(dados.mensagem)
+    } catch(err) {
+        console.log("CODE:", err.code)
+        console.log("KEY:", err.keyValue)
+        console.log(`${err}, Deu erro no fetch`)
+    }
 })
 
 
