@@ -10,7 +10,7 @@ const el = {
 }
 
 const regexs = {
-    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-Z]$/,
+    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
     regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
 }
@@ -28,6 +28,11 @@ function alterarTela() {
 function validarformulario(input, regex) {
     const valor = input.value
 
+
+    if (valor !== valor.trim()) {
+        return input.style.border = "2px solid red"
+    }
+    
     if (regex.test(valor)) {
         input.style.border = "2px solid green"
     } else {
