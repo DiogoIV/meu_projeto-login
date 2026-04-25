@@ -7,8 +7,11 @@ const el = {
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #senha'),
-    button_register: document.querySelector('.register')
+    button_register: document.querySelector('.register'),
+
+    aviso: document.querySelector('span.aviso')
 }
+
 
 const regexs = {
     regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
@@ -77,7 +80,7 @@ el.button_register.addEventListener('click', async (ele) => {
     const senhaok = validarformulario(el.input_senhaRegistro, regexs.regx_senha)
 
     if(!usuariok||!emailok|| !senhaok) {
-        return alert('preencha os dados corretamente')
+        return el.aviso.textContent = 'Preencha os dados Corretamente'
     } 
     try {    
         const res = await fetch('http://localhost:3000/usuarios', {
@@ -95,8 +98,6 @@ el.button_register.addEventListener('click', async (ele) => {
         const dados = await res.json()
         alert(dados.mensagem)
     } catch(err) {
-        console.log("CODE:", err.code)
-        console.log("KEY:", err.keyValue)
         console.log(`${err}, Deu erro no fetch`)
     }
 })
