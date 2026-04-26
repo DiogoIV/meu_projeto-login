@@ -3,7 +3,7 @@ const el = {
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
 
-    inputs: document.querySelectorAll('form_registro'),
+    inputs: document.querySelectorAll('.form_register input'),
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #senha'),
@@ -26,6 +26,10 @@ function alterarTela() {
 
     el.Linklogin.addEventListener('click', () => {
         el.conteiner.classList.remove('active')
+        el.inputs.forEach(inputs=>{
+            inputs.value = ''
+            inputs.style.border = ''
+        })
     })
 }
 
@@ -59,7 +63,7 @@ el.input_senhaRegistro.addEventListener('input', () =>
     validarformulario(el.input_senhaRegistro, regexs.regx_senha)
 )
 
-function avisodoformulario() {
+/* function avisodoformulario() {
     el.inputs.forEach(input => {
         input.addEventListener("invalid", (e) => {
             e.preventDefault();
@@ -69,7 +73,7 @@ function avisodoformulario() {
             input.style.border = "";
         });
     });
-}
+} */
 
 
 el.button_register.addEventListener('click', async (ele) => {
@@ -79,9 +83,10 @@ el.button_register.addEventListener('click', async (ele) => {
     const emailok = validarformulario(el.input_emailRegistro, regexs.regx_email)
     const senhaok = validarformulario(el.input_senhaRegistro, regexs.regx_senha)
 
-    if(!usuariok||!emailok|| !senhaok) {
-        return el.aviso.textContent = 'Preencha os dados Corretamente'
-    } 
+    if (!usuariok || !emailok || !senhaok) {
+        return el.aviso.textContent = 'Preencha os dados corretamente'
+    }
+
     try {    
         const res = await fetch('http://localhost:3000/usuarios', {
             method:'POST',
@@ -94,15 +99,29 @@ el.button_register.addEventListener('click', async (ele) => {
                 senha: el.input_senhaRegistro.value
                  
             })
+            
         })
         const dados = await res.json()
+       
+        el.inputs.forEach(input => {
+            input.value = ''
+            input.style.border = ''
+        })
+        
+        console.log(res.ok)
+        if(!res.ok) {
+            return alert(dados.mensagem)
+                
+        }
+        el.conteiner.classList.remove('active')
         alert(dados.mensagem)
+        
     } catch(err) {
-        console.log(`${err}, Deu erro no fetch`)
+        console.log(`${err}`)
     }
 })
 
 
 alterarTela()
-avisodoformulario()
+
 
