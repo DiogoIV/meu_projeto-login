@@ -1,3 +1,4 @@
+
 const el = {
     conteiner: document.querySelector('.conteiner'),
     Linkregister: document.querySelector('#btn_register'),
@@ -22,6 +23,7 @@ const regexs = {
 function alterarTela() {
     el.Linkregister.addEventListener('click', () => {
         el.conteiner.classList.add('active')
+        
     })
 
     el.Linklogin.addEventListener('click', () => {
@@ -30,13 +32,16 @@ function alterarTela() {
             inputs.value = ''
             inputs.style.border = ''
         })
+        el.aviso.textContent = ''
     })
 }
 
 function validarformulario(input, regex) {
     const valor = input.value
-
-
+    if (valor.includes(" ")) {
+    input.style.border = "2px solid red"
+    return false
+}
     if (valor !== valor.trim()) {
         input.style.border = "2px solid red"
         return false
@@ -55,9 +60,11 @@ el.input_usuarioRegistro.addEventListener('input', () =>
     validarformulario(el.input_usuarioRegistro, regexs.regx_usuario)
 )
 
-el.input_emailRegistro.addEventListener('input', () =>
+el.input_emailRegistro.addEventListener('input', (et) =>{
+    
     validarformulario(el.input_emailRegistro, regexs.regx_email)
-)
+    console.log(el.input_emailRegistro.value)
+})
 
 el.input_senhaRegistro.addEventListener('input', () =>
     validarformulario(el.input_senhaRegistro, regexs.regx_senha)
