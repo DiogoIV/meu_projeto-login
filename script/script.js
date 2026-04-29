@@ -1,23 +1,8 @@
-
+/*global*/
 const el = {
     conteiner: document.querySelector('.conteiner'),
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
-
-    inputs: document.querySelectorAll('.form_register input'),
-    input_usuarioRegistro: document.querySelector('.input-register #usu'),
-    input_emailRegistro: document.querySelector('.input-register #email'),
-    input_senhaRegistro: document.querySelector('.input-register #senha'),
-    button_register: document.querySelector('.register'),
-
-    aviso: document.querySelector('span.aviso')
-}
-
-
-const regexs = {
-    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
-    regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
 }
 
 function alterarTela() {
@@ -28,12 +13,29 @@ function alterarTela() {
 
     el.Linklogin.addEventListener('click', () => {
         el.conteiner.classList.remove('active')
-        el.inputs.forEach(inputs=>{
+        register.inputs.forEach(inputs=>{
             inputs.value = ''
             inputs.style.border = ''
         })
-        el.aviso.textContent = ''
+        register.aviso.textContent = ''
     })
+}
+
+/*-----Registro-----*/
+
+const regexs = {
+    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
+    regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
+}
+
+const register = {
+    inputs: document.querySelectorAll('.form_register input'),
+    input_usuarioRegistro: document.querySelector('.input-register #usu'),
+    input_emailRegistro: document.querySelector('.input-register #email'),
+    input_senhaRegistro: document.querySelector('.input-register #senha'),
+    button_register: document.querySelector('.register'),
+    aviso: document.querySelector('span.aviso')
 }
 
 function validarformulario(input, regex) {
@@ -56,42 +58,32 @@ function validarformulario(input, regex) {
     }
 }
 
-el.input_usuarioRegistro.addEventListener('input', () =>
-    validarformulario(el.input_usuarioRegistro, regexs.regx_usuario)
-)
-
-el.input_emailRegistro.addEventListener('input', (et) =>{
+function verificarCampos() {
+    register.input_usuarioRegistro.addEventListener('input', () =>
+        validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
+    )
     
-    validarformulario(el.input_emailRegistro, regexs.regx_email)
-    console.log(el.input_emailRegistro.value)
-})
+    register.input_emailRegistro.addEventListener('input', (et) =>{
+        
+        validarformulario(register.input_emailRegistro, regexs.regx_email)
+        console.log(register.input_emailRegistro.value)
+    })
+    
+    register.input_senhaRegistro.addEventListener('input', () =>
+        validarformulario(register.input_senhaRegistro, regexs.regx_senha)
+    )
 
-el.input_senhaRegistro.addEventListener('input', () =>
-    validarformulario(el.input_senhaRegistro, regexs.regx_senha)
-)
+}
 
-/* function avisodoformulario() {
-    el.inputs.forEach(input => {
-        input.addEventListener("invalid", (e) => {
-            e.preventDefault();
-            input.style.border = "2px solid red";
-        });
-        input.addEventListener("input", () => {
-            input.style.border = "";
-        });
-    });
-} */
-
-
-el.button_register.addEventListener('click', async (ele) => {
+register.button_register.addEventListener('click', async (ele) => {
     ele.preventDefault()
 
-    const usuariok = validarformulario(el.input_usuarioRegistro, regexs.regx_usuario)
-    const emailok = validarformulario(el.input_emailRegistro, regexs.regx_email)
-    const senhaok = validarformulario(el.input_senhaRegistro, regexs.regx_senha)
+    const usuariok = validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
+    const emailok = validarformulario(register.input_emailRegistro, regexs.regx_email)
+    const senhaok = validarformulario(register.input_senhaRegistro, regexs.regx_senha)
 
     if (!usuariok || !emailok || !senhaok) {
-        return el.aviso.textContent = 'Preencha os dados corretamente'
+        return register.aviso.textContent = 'Preencha os dados corretamente'
     }
 
     try {    
@@ -101,16 +93,16 @@ el.button_register.addEventListener('click', async (ele) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                usuario: el.input_usuarioRegistro.value,
-                email: el.input_emailRegistro.value,
-                senha: el.input_senhaRegistro.value
+                usuario: register.input_usuarioRegistro.value,
+                email: register.input_emailRegistro.value,
+                senha: register.input_senhaRegistro.value
                  
             })
             
         })
         const dados = await res.json()
        
-        el.inputs.forEach(input => {
+        register.inputs.forEach(input => {
             input.value = ''
             input.style.border = ''
         })
@@ -128,7 +120,30 @@ el.button_register.addEventListener('click', async (ele) => {
     }
 })
 
-
 alterarTela()
+verificarCampos()
+
+/*-----Logar----*/
+const login = {
+    inputs_login: document.querySelector('.form_login'),
+    inputs_usuarioLogin: document.querySelector('.form_login #texto'),
+    inputs_usenhaLogin: document.querySelector('.form_login #senha'),
+    button_login: document.querySelector('button_login')
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
