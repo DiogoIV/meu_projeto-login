@@ -4,6 +4,11 @@ const el = {
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
 }
+const regexs = {
+    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
+    regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
+}
 
 function alterarTela() {
     el.Linkregister.addEventListener('click', () => {
@@ -23,11 +28,7 @@ function alterarTela() {
 
 /*-----Registro-----*/
 
-const regexs = {
-    regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
-    regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
-}
+
 
 const register = {
     inputs: document.querySelectorAll('.form_register input'),
@@ -128,11 +129,27 @@ const login = {
     inputs_login: document.querySelector('.form_login'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
-    button_login: document.querySelector('button_login')
-    
-    
+    button_login: document.querySelector('#button_login')
 }
 
+console.log(login.button_login)
+
+login.button_login.addEventListener('click', async e => {
+    e.preventDefault()
+
+    const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            usuario: login.inputs_usuarioLogin.value,senha: login.inputs_usenhaLogin.value}
+        )
+    })
+
+    const dados = await res.json()
+    alert(dados.mensagem)
+})
 
 
 
