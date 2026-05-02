@@ -26,7 +26,7 @@ async function conectar() {
         console.log(err)
     }
 }
-
+/*Registro*/
 app.post('/usuarios', async (req, res) => {
     console.log(req.body)
     try {
@@ -47,6 +47,16 @@ app.post('/usuarios', async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro no servidor' })
     }
 })
+
+/*login*/
+
+app.post(/login/, async(req,res)=> {
+    const {usuario, senha} = req.body;
+    const user = db.collection('usuarios').findOne({usuario: usuario})
+})
+
+
+
 
 app.listen(3000, async () => {
     await conectar()

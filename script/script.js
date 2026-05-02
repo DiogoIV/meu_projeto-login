@@ -13,12 +13,12 @@ const regexs = {
 function alterarTela() {
     el.Linkregister.addEventListener('click', () => {
         el.conteiner.classList.add('active')
-        
+
     })
 
     el.Linklogin.addEventListener('click', () => {
         el.conteiner.classList.remove('active')
-        register.inputs.forEach(inputs=>{
+        register.inputs.forEach(inputs => {
             inputs.value = ''
             inputs.style.border = ''
         })
@@ -42,14 +42,14 @@ const register = {
 function validarformulario(input, regex) {
     const valor = input.value
     if (valor.includes(" ")) {
-    input.style.border = "2px solid red"
-    return false
-}
+        input.style.border = "2px solid red"
+        return false
+    }
     if (valor !== valor.trim()) {
         input.style.border = "2px solid red"
         return false
     }
-    
+
     if (regex.test(valor)) {
         input.style.border = "2px solid green"
         return true
@@ -63,13 +63,13 @@ function verificarCampos() {
     register.input_usuarioRegistro.addEventListener('input', () =>
         validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
     )
-    
-    register.input_emailRegistro.addEventListener('input', (et) =>{
-        
+
+    register.input_emailRegistro.addEventListener('input', (et) => {
+
         validarformulario(register.input_emailRegistro, regexs.regx_email)
         console.log(register.input_emailRegistro.value)
     })
-    
+
     register.input_senhaRegistro.addEventListener('input', () =>
         validarformulario(register.input_senhaRegistro, regexs.regx_senha)
     )
@@ -87,9 +87,9 @@ register.button_register.addEventListener('click', async (ele) => {
         return register.aviso.textContent = 'Preencha os dados corretamente'
     }
 
-    try {    
+    try {
         const res = await fetch('http://localhost:3000/usuarios', {
-            method:'POST',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -97,26 +97,26 @@ register.button_register.addEventListener('click', async (ele) => {
                 usuario: register.input_usuarioRegistro.value,
                 email: register.input_emailRegistro.value,
                 senha: register.input_senhaRegistro.value
-                 
+
             })
-            
+
         })
         const dados = await res.json()
-       
+
         register.inputs.forEach(input => {
             input.value = ''
             input.style.border = ''
         })
-        
+
         console.log(res.ok)
-        if(!res.ok) {
+        if (!res.ok) {
             return alert(dados.mensagem)
-                
+
         }
         el.conteiner.classList.remove('active')
         alert(dados.mensagem)
-        
-    } catch(err) {
+
+    } catch (err) {
         console.log(`${err}`)
     }
 })
@@ -126,24 +126,45 @@ verificarCampos()
 
 /*-----Logar----*/
 const login = {
-    inputs_login: document.querySelector('.form_login'),
+    aviso_login: document.getElementsByClassName('aviso_login')[0],
+    inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
     button_login: document.querySelector('#button_login')
 }
 
-console.log(login.button_login)
+login.inputs_login.forEach(el => {
+    el.addEventListener('input', () => {
+        el.value = el.value.replace(/\s/g, '')
+    })
+
+})
+ 
 
 login.button_login.addEventListener('click', async e => {
     e.preventDefault()
 
+    const usuario = login.inputs_usuarioLogin.value;
+    const senha = login.inputs_usenhaLogin.value;
+    login.aviso_login.textContent = ''
+    
+    if (!regexs.regx_usuario.test(usuario)) {
+        return login.aviso_login.textContent = 'Usuario Invalido!'
+    }
+    if (!regexs.regx_senha.test(senha)) {
+        return login.aviso_login.textContent = 'Senha Invalida'
+    }
+
+
+
     const res = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            usuario: login.inputs_usuarioLogin.value,senha: login.inputs_usenhaLogin.value}
+            usuario: usuario, senha: senha
+        }
         )
     })
 
