@@ -3,7 +3,9 @@ const el = {
     conteiner: document.querySelector('.conteiner'),
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
+    aviso: document.querySelectorAll('.aviso')
 }
+
 const regexs = {
     regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
     regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -13,7 +15,7 @@ const regexs = {
 function alterarTela() {
     el.Linkregister.addEventListener('click', () => {
         el.conteiner.classList.add('active')
-
+        
     })
 
     el.Linklogin.addEventListener('click', () => {
@@ -22,7 +24,9 @@ function alterarTela() {
             inputs.value = ''
             inputs.style.border = ''
         })
-        register.aviso.textContent = ''
+        el.aviso.forEach(el => {
+            return el.classList.remove('aviso_active')
+        })
     })
 }
 
@@ -36,15 +40,10 @@ const register = {
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #senha'),
     button_register: document.querySelector('.register'),
-    aviso: document.querySelector('span.aviso')
 }
 
 function validarformulario(input, regex) {
     const valor = input.value
-    if (valor.includes(" ")) {
-        input.style.border = "2px solid red"
-        return false
-    }
     if (valor !== valor.trim()) {
         input.style.border = "2px solid red"
         return false
@@ -84,7 +83,8 @@ register.button_register.addEventListener('click', async (ele) => {
     const senhaok = validarformulario(register.input_senhaRegistro, regexs.regx_senha)
 
     if (!usuariok || !emailok || !senhaok) {
-        return register.aviso.textContent = 'Preencha os dados corretamente'
+        el.aviso[1].classList.add('aviso_active')
+        return el.aviso[1].textContent = 'Preencha os dados corretamente'
     }
 
     try {
@@ -117,7 +117,7 @@ register.button_register.addEventListener('click', async (ele) => {
         alert(dados.mensagem)
 
     } catch (err) {
-        console.log(`${err}`)
+        console.log(err)
     }
 })
 
@@ -143,16 +143,18 @@ login.inputs_login.forEach(el => {
 
 login.button_login.addEventListener('click', async e => {
     e.preventDefault()
-
     const usuario = login.inputs_usuarioLogin.value;
     const senha = login.inputs_usenhaLogin.value;
-    login.aviso_login.textContent = ''
+    const aviso_login = el.aviso[0]
     
     if (!regexs.regx_usuario.test(usuario)) {
-        return login.aviso_login.textContent = 'Usuario Invalido!'
+        aviso_login.classList.add('aviso_active')
+        return aviso_login.textContent = 'Usuario Invalido'
     }
     if (!regexs.regx_senha.test(senha)) {
-        return login.aviso_login.textContent = 'Senha Invalida'
+        aviso_login.classList.add('aviso_active')
+        return aviso_login.textContent = 'Senha Invalida'
+        
     }
 
 

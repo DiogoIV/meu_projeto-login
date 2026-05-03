@@ -42,7 +42,7 @@ section.conteiner {
     justify-content: center;
     
 
-   overflow: hidden;
+    overflow: hidden;
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
@@ -183,11 +183,18 @@ button.login, button.register {
 }
 
 .aviso {
+    display: none;
+    
+}
+
+.aviso_active {
     display: block;
-    margin-top: 8px;
     color: red;
-    font-size: 0.9rem;
-    min-height: 18px; /* mantém espaço fixo */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 5px;
+    margin: 10px;
+    border-radius: 8px;;
     text-align: center;
 }
 

@@ -50,9 +50,20 @@ app.post('/usuarios', async (req, res) => {
 
 /*login*/
 
-app.post(/login/, async(req,res)=> {
+app.post('/login', async(req,res)=> {
     const {usuario, senha} = req.body;
-    const user = db.collection('usuarios').findOne({usuario: usuario})
+    console.log(usuario, senha)
+    const user = await db.collection('usuarios').findOne({usuario})
+    if(!user){
+        return res.status(404).json({mensagem: 'Usuário não encontrado'})
+    } 
+    if(senha !== user.senha) {
+        return res.status(401).json({mensagem: 'Senha incorreta'})
+
+    }
+    
+    res.status(200).json({mensagem: 'Logado com Sucesso'})
+    
 })
 
 
