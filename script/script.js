@@ -39,7 +39,8 @@ const register = {
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #senha'),
-    button_register: document.querySelector('.register'),
+    input_senhaRegistroconfirmar: document.querySelector('.input-register #senhaconfirm'),
+    button_register: document.querySelector('.register')
 }
 
 function validarformulario(input, regex) {
@@ -58,6 +59,8 @@ function validarformulario(input, regex) {
     }
 }
 
+
+
 function verificarCampos() {
     register.input_usuarioRegistro.addEventListener('input', () =>
         validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
@@ -75,17 +78,38 @@ function verificarCampos() {
 
 }
 
+
+function validarConfirmaSenha() {
+    const senha = register.input_senhaRegistro.value;
+    const confirmar = register.input_senhaRegistroconfirmar.value;
+    if (confirmar !== senha || confirmar.includes(' ')|| confirmar.includes('')) {
+        register.input_senhaRegistroconfirmar.style.border = '2px solid red';
+        return false;
+    } else {
+        register.input_senhaRegistroconfirmar.style.border = '2px solid green';
+        return true;
+    }
+}
+
+register.input_senhaRegistroconfirmar.addEventListener('input', () => {
+    validarConfirmaSenha();
+});
+
 register.button_register.addEventListener('click', async (ele) => {
     ele.preventDefault()
 
     const usuariok = validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
     const emailok = validarformulario(register.input_emailRegistro, regexs.regx_email)
     const senhaok = validarformulario(register.input_senhaRegistro, regexs.regx_senha)
+    const senhaconfirm = validarConfirmaSenha()
+    
 
-    if (!usuariok || !emailok || !senhaok) {
+    if (!usuariok || !emailok || !senhaok|| !senhaconfirm) {
         el.aviso[1].classList.add('aviso_active')
         return el.aviso[1].textContent = 'Preencha os dados corretamente'
     }
+
+    
 
     try {
         const res = await fetch('http://localhost:3000/usuarios', {
