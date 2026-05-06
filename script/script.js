@@ -81,9 +81,10 @@ function verificarCampos() {
 
 
 function validarConfirmaSenha() {
-    const senha = register.input_senhaRegistro.value;
+    const senha = register.input_senhaRegistro.value
     const confirmar = register.input_senhaRegistroconfirmar.value;
-    if (confirmar !== senha || confirmar.includes(' ')|| confirmar.includes('')) {
+    
+    if (confirmar !== senha || confirmar.includes(' ')|| confirmar.trim() == '') {
         register.input_senhaRegistroconfirmar.style.border = '2px solid red';
         return false;
     } else {

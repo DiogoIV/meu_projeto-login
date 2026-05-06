@@ -169,7 +169,8 @@ button.login, button.register {
 
 .register-link p {
     display: block;
-    margin-left: 30px;
+    text-align: center;
+    
 }
 
 .register-link a {
