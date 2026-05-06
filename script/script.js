@@ -3,7 +3,8 @@ const el = {
     conteiner: document.querySelector('.conteiner'),
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
-    aviso: document.querySelectorAll('.aviso')
+    aviso: document.querySelectorAll('.aviso'),
+    olho_aberto: document.querySelectorAll('.openeyes')
 }
 
 const regexs = {
@@ -38,7 +39,7 @@ const register = {
     inputs: document.querySelectorAll('.form_register input'),
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
-    input_senhaRegistro: document.querySelector('.input-register #senha'),
+    input_senhaRegistro: document.querySelector('.input-register #resenha'),
     input_senhaRegistroconfirmar: document.querySelector('.input-register #senhaconfirm'),
     button_register: document.querySelector('.register')
 }
@@ -162,6 +163,23 @@ login.inputs_login.forEach(el => {
         el.value = el.value.replace(/\s/g, '')
     })
 
+})
+
+el.olho_aberto.forEach(icone=>{
+    icone.addEventListener('click', ()=> {
+        const id = icone.dataset.target;
+        const input = document.getElementById(id)
+        if(input.type === 'text') {
+            input.type = 'password'
+            icone.classList.remove('fa-eye')
+            icone.classList.add('fa-eye-slash')
+            
+        } else {
+            input.type = 'text'
+            icone.classList.remove('fa-eye-slash')
+            icone.classList.add('fa-eye')
+        }
+    })
 })
  
 
