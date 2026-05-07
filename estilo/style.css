@@ -40,9 +40,9 @@ section.conteiner {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
+    text-shadow: 1px 1px 3px black;
 
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
@@ -86,7 +86,46 @@ section.conteiner {
     transform: translate(0);
     
 }
+.conteiner .form_esqueci{
+    position: absolute;
+    transition: none;
+    transform: translate(-400px);
+}
 
+
+.conteiner.active_token .form_login {
+    transform: translate(-400px);
+}
+
+.conteiner.active_token .form_esqueci {
+    
+    transform: translate(0);
+    transition: transform .50s ease;
+}
+
+.conteiner.active_token {
+    height: 300px;
+    
+}
+
+.conteiner.active_token h1 {
+    margin-bottom: 20px;
+}
+
+div.input-esqueci input {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+
+    font-size: 15px;
+    
+    box-shadow: rgba(0, 0, 0, 0.80) 0px 5px 15px;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px 0px;
+    width: 100%;
+    outline: none;
+    caret-color: var(--border);
+}
 
 
 .conteiner h1{
@@ -101,7 +140,7 @@ form {
 
 
 
-div.input-login, .input-register {
+div.input-login, .input-register{
     position: relative;
     width: 100%;
     
@@ -153,7 +192,7 @@ div.lembrar-senha > a {
     color: var(--white);
 }
 
-button.login, button.register {
+button.login, button.register, button#esqueci_senha{
     display: block;
     padding: 10px;
     width: 200px;
@@ -201,10 +240,11 @@ button.login, button.register {
 
 /*Media*/
 
-@media (max-width: 398px) {
-    section#conteiner {
-        width: 290px;
+@media (max-width: 380px) {
+    section.conteiner {
+        width: 342px;
         
+    
     }
 }
 

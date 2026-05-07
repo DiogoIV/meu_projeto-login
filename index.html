@@ -27,7 +27,7 @@
                         <input type="checkbox" name="" id="icheckbox">
                         <label for="icheckbox">Remember me</label>
                     </div>
-                    <a href="#" class="register-link">forgot password?</a>
+                    <a href="#" class="register-link" id="forget_password">forgot password?</a>
                 </div>
                 <button type="submit" class="login" id="button_login">Login</button>
                 <div class="register-link">
@@ -69,6 +69,23 @@
                     <p> have an account? <a href="#" id="btn_login"><strong>Login</strong></a></p>
                 </div>
             </form>
+
+
+
+
+            <form action="" method="post" class="form_esqueci">
+                
+                <div class="input-esqueci">
+                    <h1>Recuperar a senha</h1>
+                    <p style="margin-bottom: 15px;">Digite seu endereço de email</p>
+                    <label for="email_recuperar">Email:</label>
+                    <input type="email" autocomplete="email" id="email_recuperar">
+                </div>
+                <div>
+                    <button type="submit" id="esqueci_senha"> Enviar código</button>
+                </div>
+            </form>
+            
     </section>
     <script src="script/script.js"></script>
 </body>

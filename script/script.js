@@ -147,41 +147,43 @@ register.button_register.addEventListener('click', async (ele) => {
     }
 })
 
-alterarTela()
-verificarCampos()
-
 /*-----Logar----*/
 const login = {
     aviso_login: document.getElementsByClassName('aviso_login')[0],
+    forgot_password:document.getElementById('forget_password'),
     inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
     button_login: document.querySelector('#button_login')
 }
 
-login.inputs_login.forEach(el => {
+
+
+function alterarinput() {
+    el.olho_aberto.forEach(icone=>{
+        icone.addEventListener('click', ()=> {
+            const id = icone.dataset.target;
+            const input = document.getElementById(id)
+            if(input.type === 'text') {
+                input.type = 'password'
+                icone.classList.remove('fa-eye')
+                icone.classList.add('fa-eye-slash')
+                
+            } else {
+                input.type = 'text'
+                icone.classList.remove('fa-eye-slash')
+                icone.classList.add('fa-eye')
+            }
+        })
+    })
+
+    login.inputs_login.forEach(el => {
     el.addEventListener('input', () => {
         el.value = el.value.replace(/\s/g, '')
     })
 
 })
-
-el.olho_aberto.forEach(icone=>{
-    icone.addEventListener('click', ()=> {
-        const id = icone.dataset.target;
-        const input = document.getElementById(id)
-        if(input.type === 'text') {
-            input.type = 'password'
-            icone.classList.remove('fa-eye')
-            icone.classList.add('fa-eye-slash')
-            
-        } else {
-            input.type = 'text'
-            icone.classList.remove('fa-eye-slash')
-            icone.classList.add('fa-eye')
-        }
-    })
-})
+}
  
 
 login.button_login.addEventListener('click', async e => {
@@ -216,6 +218,22 @@ login.button_login.addEventListener('click', async e => {
     const dados = await res.json()
     alert(dados.mensagem)
 })
+console.log(login.forgot_password)
+
+login.forgot_password.addEventListener('click', (ele)=> {
+    ele.preventDefault()
+    el.conteiner.classList.add('active_token')
+})
+
+
+
+
+
+
+alterarinput()
+alterarTela()
+verificarCampos()
+
 
 
 
