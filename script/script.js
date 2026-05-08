@@ -154,7 +154,9 @@ const login = {
     inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
-    button_login: document.querySelector('#button_login')
+    inputs_esqueciSenha: document.querySelector('#email_recuperar'),
+    button_login: document.querySelector('#button_login'),
+    button_esqueci: document.querySelector('#esqueci_senha')
 }
 
 
@@ -218,11 +220,43 @@ login.button_login.addEventListener('click', async e => {
     const dados = await res.json()
     alert(dados.mensagem)
 })
-console.log(login.forgot_password)
+
+/*esqueci a senha*/
 
 login.forgot_password.addEventListener('click', (ele)=> {
     ele.preventDefault()
     el.conteiner.classList.add('active_token')
+})
+
+
+login.inputs_esqueciSenha.addEventListener('input', el =>{
+    
+    validarformulario(el.target, regexs.regx_email)
+})
+
+login.button_esqueci.addEventListener('click', async e =>{
+    e.preventDefault()
+    const email_recuperar = login.inputs_esqueciSenha.value
+    const aviso_login = el.aviso[2]
+    
+    if (!regexs.regx_email.test(email_recuperar)) {
+        aviso_login.classList.add('aviso_active')
+        return aviso_login.textContent = 'Email envalido'
+    } else {
+        aviso_login.classList.remove('aviso_active')
+    }
+
+    const res = await fetch('http://localhost:3000/recuperar_senha', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email_recuperar
+        })
+    })
+    const dados = await res.json()
+    alert(dados.mensagem)    
 })
 
 

@@ -42,7 +42,7 @@ section.conteiner {
     justify-content: center;
     text-shadow: 1px 1px 3px black;
 
-    /* overflow: hidden; */
+    overflow: hidden; 
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
@@ -86,14 +86,16 @@ section.conteiner {
     transform: translate(0);
     
 }
+
 .conteiner .form_esqueci{
     position: absolute;
-    transition: none;
+    
     transform: translate(-400px);
 }
 
 
 .conteiner.active_token .form_login {
+    transition: none;
     transform: translate(-400px);
 }
 

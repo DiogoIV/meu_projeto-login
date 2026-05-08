@@ -66,7 +66,18 @@ app.post('/login', async(req,res)=> {
     
 })
 
+/*Recuperar a senha*/ 
 
+
+app.post('/recuperar_senha', async (req,res)=> {
+    const {email} = req.body
+    const email_banco = await db.collection('usuarios').findOne({email})
+    if(email_banco) {
+        return res.status(200).json({mensagem: 'Token enviado para seu email'})
+    } else {
+        return res.status(404).json({mensagem: 'Email não encontrado'})
+    }
+})
 
 
 app.listen(3000, async () => {
