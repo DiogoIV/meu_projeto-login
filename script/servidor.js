@@ -8,8 +8,8 @@ const client = new MongoClient(url)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: 'servidordiogo157@gmail.com',
+        pass: 'dtyo gqyw iytx yqap'
     }
 })
 let db
@@ -33,10 +33,10 @@ async function conectar() {
 }
 
 function gerarToken() {
-    const estoque = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'    
+    const estoque = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     let token = ''
 
-    for(let i = 0; i < 6; i++)  {
+    for (let i = 0; i < 6; i++) {
         const valor = Math.floor(Math.random() * estoque.length)
         token += estoque[valor]
     }
@@ -70,40 +70,46 @@ app.post('/usuarios', async (req, res) => {
 
 /*login*/
 
-app.post('/login', async(req,res)=> {
-    const {usuario, senha} = req.body;
+app.post('/login', async (req, res) => {
+    const { usuario, senha } = req.body;
     console.log(usuario, senha)
-    const user = await db.collection('usuarios').findOne({usuario})
-    if(!user){
-        return res.status(404).json({mensagem: 'Usuário não encontrado'})
-    } 
-    if(senha !== user.senha) {
-        return res.status(401).json({mensagem: 'Senha incorreta'})
+    const user = await db.collection('usuarios').findOne({ usuario })
+    if (!user) {
+        return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    }
+    if (senha !== user.senha) {
+        return res.status(401).json({ mensagem: 'Senha incorreta' })
 
     }
-    
-    res.status(200).json({mensagem: 'Logado com Sucesso'})
-    
+
+    res.status(200).json({ mensagem: 'Logado com Sucesso' })
+
 })
 
-/*Recuperar a senha*/ 
+/*Recuperar a senha*/
 
 
-app.post('/recuperar_senha', async (req,res)=> {
-    const {email} = req.body
-    const email_banco = await db.collection('usuarios').findOne({email})
-    if(email_banco) {
+app.post('/recuperar_senha', async (req, res) => {
+    const { email } = req.body
+    const email_banco = await db.collection('usuarios').findOne({ email })
+    if (email_banco) {
         const geradordetoken = gerarToken()
         await db.collection('usuarios').updateOne(
-            {email: email_banco.email},
-            {$set: {resetToken: geradordetoken}}
+            { email: email_banco.email },
+            { $set: { resetToken: geradordetoken } }
         )
-        
 
+        const mailOptions = {
+            from: 'servidordiogo157@gmail.com',
+            to: email,
+            subject: 'Recuperação de senha',
+            text: `Seu código é: ${geradordetoken}`
+        }
+        await transporter.sendMail(mailOptions)
 
-        return res.status(200).json({mensagem: 'Token enviado para seu email'})
+        return res.status(200).json({ mensagem: 'Token enviado para seu email' })
     } else {
-        return res.status(404).json({mensagem: 'Email não encontrado'})
+        return res.status(404).json({ mensagem: 'Email não encontrado' })
     }
 })
 
