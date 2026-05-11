@@ -1,10 +1,17 @@
 const express = require('express')
 const app = express()
+const nodemailer = require('nodemailer')
 const cors = require('cors')
 const { MongoClient } = require('mongodb')
 const url = "mongodb://diogorodriguesdasilva156_db_user:Dingo157@ac-j8kt6t6-shard-00-00.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-01.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-02.1ulz8m0.mongodb.net:27017/?ssl=true&replicaSet=atlas-p6c5a3-shard-0&authSource=admin&appName=Cluster0"
 const client = new MongoClient(url)
-
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: '',
+        pass: ''
+    }
+})
 let db
 
 app.use(express.json())
@@ -86,6 +93,14 @@ app.post('/recuperar_senha', async (req,res)=> {
     const {email} = req.body
     const email_banco = await db.collection('usuarios').findOne({email})
     if(email_banco) {
+        const geradordetoken = gerarToken()
+        await db.collection('usuarios').updateOne(
+            {email: email_banco.email},
+            {$set: {resetToken: geradordetoken}}
+        )
+        
+
+
         return res.status(200).json({mensagem: 'Token enviado para seu email'})
     } else {
         return res.status(404).json({mensagem: 'Email não encontrado'})
