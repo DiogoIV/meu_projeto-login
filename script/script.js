@@ -151,6 +151,8 @@ register.button_register.addEventListener('click', async (ele) => {
 const login = {
     aviso_login: document.getElementsByClassName('aviso_login')[0],
     forgot_password:document.getElementById('forget_password'),
+    validar_codigo: document.getElementById('token_enviar'),
+
     inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
@@ -187,6 +189,7 @@ function alterarinput() {
 })
 }
  
+
 
 login.button_login.addEventListener('click', async e => {
     e.preventDefault()
@@ -256,12 +259,19 @@ login.button_esqueci.addEventListener('click', async e =>{
         })
     })
     const dados = await res.json()
-    alert(dados.mensagem)    
+    alert(dados.mensagem)
+    if(res.ok) {
+        el.conteiner.classList.remove('active_token')
+        el.conteiner.classList.add('active_validar_token')
+        
+    }
 })
 
 
 
-
+login.validar_codigo.addEventListener('click', el=> {
+    el.preventDefault()
+})
 
 
 alterarinput()

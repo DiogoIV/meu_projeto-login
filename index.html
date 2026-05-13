@@ -29,7 +29,7 @@
                     </div>
                     <a href="#" class="register-link" id="forget_password">forgot password?</a>
                 </div>
-                <button type="submit" class="login" id="button_login">Login</button>
+                <button type="submit" class="login but" id="button_login">Login</button>
                 <div class="register-link">
                     <p>Don't have an account? <a href="#" id="btn_register"><strong>Register</strong></a></p>
                 </div>
@@ -63,14 +63,12 @@
                         <label for="icheckbox_register">Do you agree with the terms of use?</label>
                     </div>
                 </div>
-                <button type="submit" class="register">Register</button>
+                <button type="submit" class="register but">Register</button>
                 <span class="aviso"></span>
                 <div class="register-link">
                     <p> have an account? <a href="#" id="btn_login"><strong>Login</strong></a></p>
                 </div>
             </form>
-
-
 
 
             <form action="" method="post" class="form_esqueci">
@@ -83,7 +81,19 @@
                 </div>
                 <span class="aviso"></span>
                 <div>
-                    <button type="submit" id="esqueci_senha"> Enviar código</button>
+                    <button type="submit" id="esqueci_senha" class="but"> Enviar código</button>
+                </div>
+            </form>
+
+            <form action="" method="post" class="form_token">
+                <div class="input-esqueci">
+                    <h1>Verificação de código</h1>
+                    <p style="margin-bottom: 15px;">Digite o código enviado para seu email</p>
+                    <input type="text" autocomplete="Digite o código" id="token">
+                </div>
+                <span class="aviso"></span>
+                <div>
+                    <button type="submit" id="token_enviar" class="but"> Validar código</button>
                 </div>
             </form>
             

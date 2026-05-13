@@ -59,15 +59,19 @@ section.conteiner {
 .conteiner.active {
     height: 550px;
 }
+.conteiner.active_token {
+    height: 300px;
+    
+}
 
-.conteiner .form_login {
+.conteiner .form_login, .conteiner.active_token .form_esqueci, .conteiner.active_validar_token .form_token {
     transition: transform .50s ease;
     transform: translate(0);
 }
 
 
 
-.conteiner.active .form_login{
+.conteiner.active .form_login,.conteiner.active_token  .form_login, .conteiner.active_validar_token .form_esqueci, .conteiner.active_validar_token .form_login  {
     transition: none;
     transform: translate(-400px);
     
@@ -75,7 +79,7 @@ section.conteiner {
 
 
 
-.conteiner .form_register{
+.conteiner .form_register, .form_token, .conteiner .form_esqueci{
     transition: none;
     position: absolute;
     transform: translateX(400px);
@@ -87,28 +91,6 @@ section.conteiner {
     
 }
 
-.conteiner .form_esqueci{
-    position: absolute;
-    
-    transform: translate(-400px);
-}
-
-
-.conteiner.active_token .form_login {
-    transition: none;
-    transform: translate(-400px);
-}
-
-.conteiner.active_token .form_esqueci {
-    
-    transform: translate(0);
-    transition: transform .50s ease;
-}
-
-.conteiner.active_token {
-    height: 300px;
-    
-}
 
 .conteiner.active_token h1 {
     margin-bottom: 20px;
@@ -194,7 +176,7 @@ div.lembrar-senha > a {
     color: var(--white);
 }
 
-button.login, button.register, button#esqueci_senha{
+.but{
     display: block;
     padding: 10px;
     width: 200px;
