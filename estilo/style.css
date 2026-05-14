@@ -96,7 +96,7 @@ section.conteiner {
     margin-bottom: 20px;
 }
 
-div.input-esqueci input {
+div.input-esqueci input, div#input_token input {
     background-color: transparent;
     border: 2px solid var(--primary);
 

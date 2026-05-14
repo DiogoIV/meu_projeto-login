@@ -70,7 +70,7 @@
                 </div>
             </form>
 
-
+            <!-- form  enviar email-->
             <form action="" method="post" class="form_esqueci">
                 
                 <div class="input-esqueci">
@@ -84,14 +84,16 @@
                     <button type="submit" id="esqueci_senha" class="but"> Enviar código</button>
                 </div>
             </form>
+            
+            <!-- form  validar o token-->
 
             <form action="" method="post" class="form_token">
-                <div class="input-esqueci">
+                <div id="input_token">
                     <h1>Verificação de código</h1>
                     <p style="margin-bottom: 15px;">Digite o código enviado para seu email</p>
-                    <input type="text" autocomplete="Digite o código" id="token">
+                    <input type="text" autocomplete="Digite o código" id="input_token">
                 </div>
-                <span class="aviso"></span>
+                <span class="aviso" id="aviso_id"></span>
                 <div>
                     <button type="submit" id="token_enviar" class="but"> Validar código</button>
                 </div>

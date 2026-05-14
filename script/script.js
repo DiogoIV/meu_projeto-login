@@ -152,6 +152,7 @@ const login = {
     aviso_login: document.getElementsByClassName('aviso_login')[0],
     forgot_password:document.getElementById('forget_password'),
     validar_codigo: document.getElementById('token_enviar'),
+    input_token: document.getElementById('input_token'),
 
     inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
@@ -226,6 +227,7 @@ login.button_login.addEventListener('click', async e => {
 
 /*esqueci a senha*/
 
+
 login.forgot_password.addEventListener('click', (ele)=> {
     ele.preventDefault()
     el.conteiner.classList.add('active_token')
@@ -269,8 +271,34 @@ login.button_esqueci.addEventListener('click', async e =>{
 
 
 
-login.validar_codigo.addEventListener('click', el=> {
-    el.preventDefault()
+login.validar_codigo.addEventListener('click', async ele=> {
+    ele.preventDefault()
+    const input_token = login.input_token.value
+    const aviso_token = el.aviso[3]
+    try{
+        const res = await fetch('http://localhost:3000/token', {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({token: input_token})
+        })
+        console.log(aviso_token)
+
+
+        const dados = await res.json()
+        if(res.ok) {
+            aviso_token.classList.add('aviso_active')
+            aviso_token.style.color = 'green'
+            return aviso_token.textContent = dados.mensagem
+        } else {
+            aviso_token.classList.add('aviso_active')
+            return aviso_token.textContent = dados.mensagem
+        }
+
+    } catch(erro) {
+        console.log(erro)
+    }
+    
+
 })
 
 
