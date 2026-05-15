@@ -130,6 +130,14 @@ app.post('/token', async(req,res) => {
 
 })
 
+/* redefinir senha*/
+
+app.post('/redefinir_senha', async(req,res) => {
+    const {novasenha} = req.body
+    const {confirmarsenha} = req.body
+    
+})
+
 app.listen(3000, async () => {
     await conectar()
     console.log('rodando')

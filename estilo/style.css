@@ -42,7 +42,7 @@ section.conteiner {
     justify-content: center;
     text-shadow: 1px 1px 3px black;
 
-    overflow: hidden; 
+    overflow: hidden;
     background-color: transparent;
     backdrop-filter: blur(3px);
     border: 2px solid #f25d07d4;
@@ -64,14 +64,14 @@ section.conteiner {
     
 }
 
-.conteiner .form_login, .conteiner.active_token .form_esqueci, .conteiner.active_validar_token .form_token {
+.conteiner .form_login, .conteiner.active_token .form_esqueci, .conteiner.active_validar_token .form_token, .conteiner.active_redefinir_senha .form_redifinirsenha {
     transition: transform .50s ease;
     transform: translate(0);
 }
 
 
 
-.conteiner.active .form_login,.conteiner.active_token  .form_login, .conteiner.active_validar_token .form_esqueci, .conteiner.active_validar_token .form_login  {
+.conteiner.active .form_login,.conteiner.active_token  .form_login, .conteiner.active_validar_token .form_esqueci, .conteiner.active_validar_token .form_login,  .conteiner.active_redefinir_senha .form_login, .conteiner .active_redefinir_senha .form_esqueci,  .conteiner.active_redefinir_senha .form_token{
     transition: none;
     transform: translate(-400px);
     
@@ -79,7 +79,7 @@ section.conteiner {
 
 
 
-.conteiner .form_register, .form_token, .conteiner .form_esqueci{
+.conteiner .form_register, .conteiner .form_esqueci, .conteiner .form_token, .conteiner .form_redifinirsenha{
     transition: none;
     position: absolute;
     transform: translateX(400px);

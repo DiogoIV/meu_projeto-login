@@ -10,13 +10,13 @@ const el = {
 const regexs = {
     regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
     regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,}$/
+    regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/
 }
 
 function alterarTela() {
     el.Linkregister.addEventListener('click', () => {
         el.conteiner.classList.add('active')
-        
+
     })
 
     el.Linklogin.addEventListener('click', () => {
@@ -80,21 +80,22 @@ function verificarCampos() {
 }
 
 
-function validarConfirmaSenha() {
-    const senha = register.input_senhaRegistro.value
-    const confirmar = register.input_senhaRegistroconfirmar.value;
-    
-    if (confirmar !== senha || confirmar.includes(' ')|| confirmar.trim() == '') {
-        register.input_senhaRegistroconfirmar.style.border = '2px solid red';
+function validarConfirmaSenha(senha, confirmar) {
+    const novasenha = senha.value
+    const confirmarsenha = confirmar.value
+    if (confirmarsenha !== novasenha || confirmarsenha.includes(' ') || confirmarsenha.trim() == '') {
+        confirmar.style.border = '2px solid red';
         return false;
     } else {
-        register.input_senhaRegistroconfirmar.style.border = '2px solid green';
+        confirmar.style.border = '2px solid green';
         return true;
     }
 }
 
 register.input_senhaRegistroconfirmar.addEventListener('input', () => {
-    validarConfirmaSenha();
+    const senha = register.input_senhaRegistro
+    const confirmar = register.input_senhaRegistroconfirmar
+    validarConfirmaSenha(senha, confirmar);
 });
 
 register.button_register.addEventListener('click', async (ele) => {
@@ -103,15 +104,15 @@ register.button_register.addEventListener('click', async (ele) => {
     const usuariok = validarformulario(register.input_usuarioRegistro, regexs.regx_usuario)
     const emailok = validarformulario(register.input_emailRegistro, regexs.regx_email)
     const senhaok = validarformulario(register.input_senhaRegistro, regexs.regx_senha)
-    const senhaconfirm = validarConfirmaSenha()
-    
+    const senhaconfirm = validarConfirmaSenha(register.input_senhaRegistro, register.input_senhaRegistroconfirmar)
 
-    if (!usuariok || !emailok || !senhaok|| !senhaconfirm) {
+    console.log(senhaconfirm)
+    if (!usuariok || !emailok || !senhaok || !senhaconfirm) {
         el.aviso[1].classList.add('aviso_active')
         return el.aviso[1].textContent = 'Preencha os dados corretamente'
     }
 
-    
+
 
     try {
         const res = await fetch('http://localhost:3000/usuarios', {
@@ -150,7 +151,7 @@ register.button_register.addEventListener('click', async (ele) => {
 /*-----Logar----*/
 const login = {
     aviso_login: document.getElementsByClassName('aviso_login')[0],
-    forgot_password:document.getElementById('forget_password'),
+    forgot_password: document.getElementById('forget_password'),
     validar_codigo: document.getElementById('token_enviar'),
     input_token: document.getElementById('input_token'),
 
@@ -165,15 +166,15 @@ const login = {
 
 
 function alterarinput() {
-    el.olho_aberto.forEach(icone=>{
-        icone.addEventListener('click', ()=> {
+    el.olho_aberto.forEach(icone => {
+        icone.addEventListener('click', () => {
             const id = icone.dataset.target;
             const input = document.getElementById(id)
-            if(input.type === 'text') {
+            if (input.type === 'text') {
                 input.type = 'password'
                 icone.classList.remove('fa-eye')
                 icone.classList.add('fa-eye-slash')
-                
+
             } else {
                 input.type = 'text'
                 icone.classList.remove('fa-eye-slash')
@@ -183,13 +184,13 @@ function alterarinput() {
     })
 
     login.inputs_login.forEach(el => {
-    el.addEventListener('input', () => {
-        el.value = el.value.replace(/\s/g, '')
-    })
+        el.addEventListener('input', () => {
+            el.value = el.value.replace(/\s/g, '')
+        })
 
-})
+    })
 }
- 
+
 
 
 login.button_login.addEventListener('click', async e => {
@@ -197,7 +198,7 @@ login.button_login.addEventListener('click', async e => {
     const usuario = login.inputs_usuarioLogin.value;
     const senha = login.inputs_usenhaLogin.value;
     const aviso_login = el.aviso[0]
-    
+
     if (!regexs.regx_usuario.test(usuario)) {
         aviso_login.classList.add('aviso_active')
         return aviso_login.textContent = 'Usuario Invalido'
@@ -205,7 +206,7 @@ login.button_login.addEventListener('click', async e => {
     if (!regexs.regx_senha.test(senha)) {
         aviso_login.classList.add('aviso_active')
         return aviso_login.textContent = 'Senha Invalida'
-        
+
     }
 
 
@@ -228,22 +229,22 @@ login.button_login.addEventListener('click', async e => {
 /*esqueci a senha*/
 
 
-login.forgot_password.addEventListener('click', (ele)=> {
+login.forgot_password.addEventListener('click', (ele) => {
     ele.preventDefault()
     el.conteiner.classList.add('active_token')
 })
 
 
-login.inputs_esqueciSenha.addEventListener('input', el =>{
-    
+login.inputs_esqueciSenha.addEventListener('input', el => {
+
     validarformulario(el.target, regexs.regx_email)
 })
 
-login.button_esqueci.addEventListener('click', async e =>{
+login.button_esqueci.addEventListener('click', async e => {
     e.preventDefault()
     const email_recuperar = login.inputs_esqueciSenha.value
     const aviso_login = el.aviso[2]
-    
+
     if (!regexs.regx_email.test(email_recuperar)) {
         aviso_login.classList.add('aviso_active')
         return aviso_login.textContent = 'Email envalido'
@@ -262,41 +263,43 @@ login.button_esqueci.addEventListener('click', async e =>{
     })
     const dados = await res.json()
     alert(dados.mensagem)
-    if(res.ok) {
+    if (res.ok) {
         el.conteiner.classList.remove('active_token')
         el.conteiner.classList.add('active_validar_token')
-        
+
     }
 })
 
 
 /* validar token*/
 
-login.validar_codigo.addEventListener('click', async ele=> {
+login.validar_codigo.addEventListener('click', async ele => {
     ele.preventDefault()
     const input_token = login.input_token.value
     const aviso_token = el.aviso[3]
-    try{
+    try {
         const res = await fetch('http://localhost:3000/token', {
-        method:'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({token: input_token})
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: input_token })
         })
         console.log(input_token)
 
 
         const dados = await res.json()
-        if(res.ok) {
+        if (res.ok) {
             alert(dados.mensagem)
+            el.conteiner.classList.remove('active_validar_token')
+            el.conteiner.classList.add('active_redefinir_senha')
         } else {
             aviso_token.classList.add('aviso_active')
             return aviso_token.textContent = dados.mensagem
         }
 
-    } catch(erro) {
+    } catch (erro) {
         console.log(erro)
     }
-    
+
 
 })
 
@@ -307,12 +310,64 @@ const redefinir = {
     input_confirmarsenha: document.querySelector('#confirmar_senha_redefinir'),
     button_redefinir: document.querySelector('#butredefinir_senha'),
 
+
 }
 
-console.log(redefinir.button_redefinir)
+function redefinirSenha() {
+    redefinir.input_novasenha.addEventListener('input', (ele) => {
+
+        validarformulario(ele.target, regexs.regx_senha)
+    })
+
+    redefinir.input_confirmarsenha.addEventListener('input', ele => {
+        validarConfirmaSenha(redefinir.input_novasenha, ele.target)
+    })
+}
+
+
+
+
 
 redefinir.button_redefinir.addEventListener('click', async ele => {
-    ele.preventDefault()
+    try {
+        
+        ele.preventDefault()
+    
+        const input_novasenha = redefinir.input_novasenha
+        const input_confirmarsenha = redefinir.input_confirmarsenha
+        const aviso4 = el.aviso[4]
+    
+        const inputsenhaok = validarformulario(input_novasenha, regexs.regx_senha)
+        const inputconfirmarsenhaok = validarConfirmaSenha(redefinir.input_novasenha, redefinir.input_confirmarsenha)
+    
+    
+        if(!inputsenhaok|| !inputconfirmarsenhaok) {
+            aviso4.classList.add('aviso_active')
+            return aviso4.textContent = 'Preencha os dados Coretamente'
+            
+        } else {
+            aviso4.classList.remove('aviso_active')
+        }
+    
+        
+         const res = await fetch('http://localhost:3000/redefinir_senha', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                novasenha: input_novasenha.value,
+                confirmarsenha: input_confirmarsenha.value 
+            })
+        }) 
+        const dados = await res.json()
+        if(res.ok) {
+            alert(dados.mensagem)
+        } else {
+            alert(dados.mensagem)
+        } 
+    
+    } catch(erro) {
+        console.log(erro, 'erro ao enviar nova senha')
+    }
 }) 
 
 
@@ -321,6 +376,8 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
 alterarinput()
 alterarTela()
 verificarCampos()
+redefinirSenha()
+
 
 
 

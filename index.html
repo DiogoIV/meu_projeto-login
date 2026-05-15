@@ -35,6 +35,8 @@
                 </div>
             </form>
 
+            <!--Register-->
+
             <form action="" method="post"  class="form_register">
                 <h1>Register</h1>
                 <div class="input-register">
@@ -47,12 +49,12 @@
                     <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div class="input-register">
-                    <input type="password" name="" id="resenha" placeholder="New Password" autocomplete="new-password" required>
+                    <input type="password" name="" id="resenha" placeholder="New Password" autocomplete="new-password" required minlength="8" maxlength="64">
                     <i class="fa-solid fa-eye openeyes" data-target="resenha"></i>
                    
                 </div>
                 <div class="input-register">
-                    <input type="password" name="" id="senhaconfirm" placeholder="Confirm password" autocomplete="new-password" required>
+                    <input type="password" name="" id="senhaconfirm" placeholder="Confirm password" autocomplete="new-password" minlength="8" maxlength="64"  required>
                     <i class="fa-solid fa-lock" class="icon"></i>
                     
                 </div>         
@@ -99,15 +101,17 @@
                 </div>
             </form>
 
+            <!-- Redefinir senha-->
             <form action="" method="post" class="form_redifinirsenha">
                 <div id="containerr_inputredefinir">
                     <h1>Redefinir senha</h1>
                     <label for="">Nova senha:</label>
-                    <input type="password" placeholder="Nova senha" id="nova_senha">
+                    <input type="password" placeholder="Nova senha" id="nova_senha"  minlength="8" maxlength="64">
                 </div>
                 <div>
                     <label for="">Confirmar senha:</label>
-                    <input type="password" placeholder="Confirmar senha" id="confirmar_senha_redefinir">
+                    <input type="password" placeholder="Confirmar senha" id="confirmar_senha_redefinir"
+                    minlength="8" maxlength="64">
                 </div>
                 <span class="aviso"></span>
                 <div>
