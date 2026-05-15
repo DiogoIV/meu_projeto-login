@@ -88,7 +88,7 @@
             <!-- form  validar o token-->
 
             <form action="" method="post" class="form_token">
-                <div id="input_token">
+                <div id="conteiner_inputtoken">
                     <h1>Verificação de código</h1>
                     <p style="margin-bottom: 15px;">Digite o código enviado para seu email</p>
                     <input type="text" autocomplete="Digite o código" id="input_token">
@@ -96,6 +96,22 @@
                 <span class="aviso" id="aviso_id"></span>
                 <div>
                     <button type="submit" id="token_enviar" class="but"> Validar código</button>
+                </div>
+            </form>
+
+            <form action="" method="post" class="form_redifinirsenha">
+                <div id="containerr_inputredefinir">
+                    <h1>Redefinir senha</h1>
+                    <label for="">Nova senha:</label>
+                    <input type="password" placeholder="Nova senha" id="nova_senha">
+                </div>
+                <div>
+                    <label for="">Confirmar senha:</label>
+                    <input type="password" placeholder="Confirmar senha" id="confirmar_senha_redefinir">
+                </div>
+                <span class="aviso"></span>
+                <div>
+                    <button type="submit" id="butredefinir_senha" class="but"> Redefinir senha</button>
                 </div>
             </form>
             

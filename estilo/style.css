@@ -96,7 +96,7 @@ section.conteiner {
     margin-bottom: 20px;
 }
 
-div.input-esqueci input, div#input_token input {
+div.input-esqueci input, div#conteiner_inputtoken input, .form_redifinirsenha input {
     background-color: transparent;
     border: 2px solid var(--primary);
 
@@ -156,7 +156,7 @@ div.input-login input, div.input-register input {
     
 }
 
-.input-login input::placeholder, .input-register input::placeholder {
+.input-login input::placeholder, .input-register input::placeholder, .form_redifinirsenha input::placeholder {
     color: rgba(245, 245, 245, 0.701);
     padding: 10px;
     text-shadow: 2px 0px 2px rgba(0, 0, 0, 0.35) ;

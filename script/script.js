@@ -270,6 +270,7 @@ login.button_esqueci.addEventListener('click', async e =>{
 })
 
 
+/* validar token*/
 
 login.validar_codigo.addEventListener('click', async ele=> {
     ele.preventDefault()
@@ -281,14 +282,12 @@ login.validar_codigo.addEventListener('click', async ele=> {
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({token: input_token})
         })
-        console.log(aviso_token)
+        console.log(input_token)
 
 
         const dados = await res.json()
         if(res.ok) {
-            aviso_token.classList.add('aviso_active')
-            aviso_token.style.color = 'green'
-            return aviso_token.textContent = dados.mensagem
+            alert(dados.mensagem)
         } else {
             aviso_token.classList.add('aviso_active')
             return aviso_token.textContent = dados.mensagem
@@ -300,6 +299,23 @@ login.validar_codigo.addEventListener('click', async ele=> {
     
 
 })
+
+/* redefinir senha*/
+
+const redefinir = {
+    input_novasenha: document.querySelector('#nova_senha'),
+    input_confirmarsenha: document.querySelector('#confirmar_senha_redefinir'),
+    button_redefinir: document.querySelector('#butredefinir_senha'),
+
+}
+
+console.log(redefinir.button_redefinir)
+
+redefinir.button_redefinir.addEventListener('click', async ele => {
+    ele.preventDefault()
+}) 
+
+
 
 
 alterarinput()

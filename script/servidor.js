@@ -119,6 +119,8 @@ app.post('/recuperar_senha', async (req, res) => {
 app.post('/token', async(req,res) => {
     const {token} = req.body
     const token_usuario = await db.collection('usuarios').findOne({resetToken: token})
+    console.log(token)
+    console.log(token_usuario)
     if(token_usuario) {
         await db.collection('usuarios').updateOne({resetToken: token}, {$unset: {resetToken: ""}})
         return res.status(200).json({mensagem: 'Token valido'})
