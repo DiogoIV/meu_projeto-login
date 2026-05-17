@@ -273,17 +273,22 @@ login.button_esqueci.addEventListener('click', async e => {
 
 /* validar token*/
 
+function pegartoken () {
+    const input_token = login.input_token.value 
+    return input_token
+}
+
 login.validar_codigo.addEventListener('click', async ele => {
     ele.preventDefault()
-    const input_token = login.input_token.value
+    const input_token_validar = pegartoken()
     const aviso_token = el.aviso[3]
     try {
         const res = await fetch('http://localhost:3000/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: input_token })
+            body: JSON.stringify({ token: input_token_validar })
         })
-        console.log(input_token)
+        console.log(input_token_validar)
 
 
         const dados = await res.json()
@@ -335,6 +340,7 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
     
         const input_novasenha = redefinir.input_novasenha
         const input_confirmarsenha = redefinir.input_confirmarsenha
+        const input_token_redefinir = pegartoken()
         const aviso4 = el.aviso[4]
     
         const inputsenhaok = validarformulario(input_novasenha, regexs.regx_senha)
@@ -355,14 +361,22 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 novasenha: input_novasenha.value,
-                confirmarsenha: input_confirmarsenha.value 
+                confirmarsenha: input_confirmarsenha.value,
+                token: input_token_redefinir
             })
         }) 
         const dados = await res.json()
         if(res.ok) {
-            alert(dados.mensagem)
+            aviso4.classList.add('aviso_active')
+            aviso4.style.color = 'green'
+            aviso4.textContent = dados.mensagem || 'Senha redefinida com sucesso'       
+            setTimeout( ()=> {
+                el.conteiner.classList.remove('active_redefinir_senha')
+            },1000)
+            
         } else {
-            alert(dados.mensagem)
+            aviso4.classList.add('aviso_active')
+            aviso4.textContent = dados.mensagem || 'Erro ao redefinir senha'
         } 
     
     } catch(erro) {
@@ -372,7 +386,7 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
 
 
 
-
+pegartoken()
 alterarinput()
 alterarTela()
 verificarCampos()

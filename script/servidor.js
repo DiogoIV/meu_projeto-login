@@ -116,27 +116,64 @@ app.post('/recuperar_senha', async (req, res) => {
 
 /*validar token */
 
-app.post('/token', async(req,res) => {
-    const {token} = req.body
-    const token_usuario = await db.collection('usuarios').findOne({resetToken: token})
-    console.log(token)
-    console.log(token_usuario)
-    if(token_usuario) {
-        await db.collection('usuarios').updateOne({resetToken: token}, {$unset: {resetToken: ""}})
-        return res.status(200).json({mensagem: 'Token valido'})
+app.post('/token', async (req, res) => {
+    const { token } = req.body
+    const token_usuario = await db.collection('usuarios').findOne({ resetToken: token })
+
+    if (token_usuario) {
+        return res.status(200).json({ mensagem: 'Token valido' })
     } else {
-        return res.status(404).json({mensagem: 'Token invalido'})
+        return res.status(404).json({ mensagem: 'Token invalido' })
     }
 
 })
 
 /* redefinir senha*/
 
-app.post('/redefinir_senha', async(req,res) => {
-    const {novasenha} = req.body
-    const {confirmarsenha} = req.body
-    
+
+
+
+
+
+app.post('/redefinir_senha', async (req, res) => {
+    try {
+        const { novasenha, confirmarsenha, token } = req.body
+
+        const usuario = await db.collection
+            ('usuarios').findOne({ resetToken: token })
+
+        console.log(usuario)
+        console.log(token)
+
+        if (!usuario) {
+            return res.status(400).json({ mensagem: 'Token Invalido' })
+        }
+
+        if (novasenha !== confirmarsenha) {
+            return res.status(400).json({ mensagem: 'Senha Inválida' })
+        }
+
+        if (!novasenha || !confirmarsenha) {
+            return res.status(400).json({ mensagem: "Campos obrigatórios" })
+        }
+
+        await db.collection('usuarios').updateOne({ resetToken: token },
+            {
+                $set: { senha: novasenha },
+                $unset: { resetToken: "" }
+            }
+        )
+
+        res.status(200).json({ mensagem: 'Senha redefinida' })
+
+    } catch (erro) {
+        console.log(erro, 'Erro Interno')
+    }
+
 })
+
+
+
 
 app.listen(3000, async () => {
     await conectar()
