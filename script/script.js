@@ -1,6 +1,8 @@
 /*global*/
 const el = {
     conteiner: document.querySelector('.conteiner'),
+    conteiner_perfil: document.querySelector('#conteiner_perfil'),
+    forms: document.querySelectorAll('form'),
     Linkregister: document.querySelector('#btn_register'),
     Linklogin: document.querySelector('#btn_login'),
     aviso: document.querySelectorAll('.aviso'),
@@ -11,6 +13,16 @@ const regexs = {
     regx_usuario: /^[a-zA-Z](?!.*[._]{2})[\w.]{2,14}[a-zA-z\d]$/,
     regx_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/
+}
+
+
+function LimparInputs(forms) {
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input')
+        inputs.forEach(input => {
+            input.value = ''
+        })
+    })
 }
 
 function alterarTela() {
@@ -155,6 +167,8 @@ const login = {
     validar_codigo: document.getElementById('token_enviar'),
     input_token: document.getElementById('input_token'),
 
+
+    conteiner_login: document.querySelector('.form_login'),
     inputs_login: document.querySelectorAll('.form_login input'),
     inputs_usuarioLogin: document.querySelector('.form_login #texto'),
     inputs_usenhaLogin: document.querySelector('.form_login #senha'),
@@ -194,36 +208,48 @@ function alterarinput() {
 
 
 login.button_login.addEventListener('click', async e => {
-    e.preventDefault()
-    const usuario = login.inputs_usuarioLogin.value;
-    const senha = login.inputs_usenhaLogin.value;
-    const aviso_login = el.aviso[0]
-
-    if (!regexs.regx_usuario.test(usuario)) {
-        aviso_login.classList.add('aviso_active')
-        return aviso_login.textContent = 'Usuario Invalido'
-    }
-    if (!regexs.regx_senha.test(senha)) {
-        aviso_login.classList.add('aviso_active')
-        return aviso_login.textContent = 'Senha Invalida'
-
-    }
-
-
-
-    const res = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            usuario: usuario, senha: senha
+    try {
+        
+        e.preventDefault()
+        const usuario = login.inputs_usuarioLogin.value;
+        const senha = login.inputs_usenhaLogin.value;
+        const aviso_login = el.aviso[0]
+    
+        if (!regexs.regx_usuario.test(usuario)) {
+            aviso_login.classList.add('aviso_active')
+            return aviso_login.textContent = 'Usuario Invalido'
         }
-        )
-    })
-
-    const dados = await res.json()
-    alert(dados.mensagem)
+        if (!regexs.regx_senha.test(senha)) {
+            aviso_login.classList.add('aviso_active')
+            return aviso_login.textContent = 'Senha Invalida'
+    
+        }
+    
+    
+    
+        const res = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                usuario: usuario, senha: senha
+            }
+            )
+        })
+    
+        const dados = await res.json()
+        
+        if(res.ok) {
+            login.conteiner_login.classList.add('active')
+            alert(dados.mensagem)
+            el.conteiner_perfil.style.display = 'flex'
+            
+        }
+    } catch(erro) {
+        console.log(erro, 'Erro ao logar')
+    }
+     
 })
 
 /*esqueci a senha*/
@@ -328,6 +354,26 @@ function redefinirSenha() {
         validarConfirmaSenha(redefinir.input_novasenha, ele.target)
     })
 }
+
+
+
+/*Perfil login*/
+
+const perfil_login = {
+    usuario_bem_vindo: document.querySelector('.bem_vindo'),
+    nome_usuario: document.querySelector('.nome_usario'),
+    email_usuario: document.getElementsByClassName('email_usario')[0],
+
+    button_editar: document.querySelector('.but_editar'),
+    button_sair: document.querySelector('.but_sair')
+    
+}
+
+perfil_login.button_sair.addEventListener('click', ele => {
+    el.conteiner_perfil.style.display = 'none'
+    LimparInputs(el.forms)
+    login.conteiner_login.style.display = 'block'
+})
 
 
 
