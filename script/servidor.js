@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
+
 const nodemailer = require('nodemailer')
+import crypto from 'crypto'
+
+
 const cors = require('cors')
 const { MongoClient } = require('mongodb')
 const url = "mongodb://diogorodriguesdasilva156_db_user:Dingo157@ac-j8kt6t6-shard-00-00.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-01.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-02.1ulz8m0.mongodb.net:27017/?ssl=true&replicaSet=atlas-p6c5a3-shard-0&authSource=admin&appName=Cluster0"
@@ -32,17 +36,7 @@ async function conectar() {
     }
 }
 
-function gerarToken() {
-    const estoque = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let token = ''
 
-    for (let i = 0; i < 6; i++) {
-        const valor = Math.floor(Math.random() * estoque.length)
-        token += estoque[valor]
-    }
-
-    return token
-}
 
 
 
@@ -90,20 +84,30 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/recuperar_senha', async (req, res) => {
+
     const { email } = req.body
     const email_banco = await db.collection('usuarios').findOne({ email })
+
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let codigo = ''
+
+    const valores = crypto.getRandomValues(new Uint32Array(6))
+
+    valores.forEach(valor => {
+        codigo += caracteres[valor % caracteres.length]
+    })
+
     if (email_banco) {
-        const geradordetoken = gerarToken()
         await db.collection('usuarios').updateOne(
             { email: email_banco.email },
-            { $set: { resetToken: geradordetoken } }
+            { $set: { resetToken: codigo} }
         )
 
         const mailOptions = {
             from: 'servidordiogo157@gmail.com',
             to: email,
             subject: 'Recuperação de senha',
-            text: `Seu código é: ${geradordetoken}`
+            text: `Seu código é: ${codigo}`
         }
         await transporter.sendMail(mailOptions)
 

@@ -49,18 +49,18 @@ section.conteiner {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     width: 380px;
-    height: 400px;
+    min-height: 400px;
 
     padding: 20px 10px; 
-    transition: height .5s ease;
+    transition: min-height .5s ease;
     
 }
 
 .conteiner.active {
-    height: 550px;
+    min-height: 550px;
 }
 .conteiner.active_token {
-    height: 300px;
+    min-height: 300px;
     
 }
 

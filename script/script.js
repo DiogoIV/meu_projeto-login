@@ -15,6 +15,22 @@ const regexs = {
     regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/
 }
 
+function Mostraraviso (aviso, aviso_texto, estado) {
+    aviso.style.color = ''
+    
+    if(estado === 'aviso_negativo') {
+        aviso.classList.add('aviso_active')
+        aviso.textContent = aviso_texto
+    } else if(estado === 'aviso_desativar') {
+        aviso.classList.remove('aviso_active')
+    } else if (estado === 'aviso_positivo') {
+        aviso.classList.add('aviso_active')
+        aviso.style.color = 'green'
+        aviso.textContent = aviso_texto
+    }
+
+    
+}
 
 function LimparInputs(forms) {
     forms.forEach(form => {
@@ -53,7 +69,8 @@ const register = {
     input_emailRegistro: document.querySelector('.input-register #email'),
     input_senhaRegistro: document.querySelector('.input-register #resenha'),
     input_senhaRegistroconfirmar: document.querySelector('.input-register #senhaconfirm'),
-    button_register: document.querySelector('.register')
+    button_register: document.querySelector('.register'),
+    input_checkbox_register: document.querySelector('#icheckbox_register')
 }
 
 function validarformulario(input, regex) {
@@ -120,8 +137,12 @@ register.button_register.addEventListener('click', async (ele) => {
 
     console.log(senhaconfirm)
     if (!usuariok || !emailok || !senhaok || !senhaconfirm) {
-        el.aviso[1].classList.add('aviso_active')
-        return el.aviso[1].textContent = 'Preencha os dados corretamente'
+        return Mostraraviso(el.aviso[1],'preencha os dados', 'aviso_negativo')
+    }
+
+
+    if(!register.input_checkbox_register.checked) {
+        return Mostraraviso(el.aviso[1], 'Marque os termos', 'aviso_negativo')
     }
 
 
@@ -149,11 +170,18 @@ register.button_register.addEventListener('click', async (ele) => {
 
         console.log(res.ok)
         if (!res.ok) {
-            return alert(dados.mensagem)
+            return Mostraraviso(el.aviso[1], dados.mensagem, 'aviso_negativo')
 
         }
-        el.conteiner.classList.remove('active')
-        alert(dados.mensagem)
+        setTimeout(()=> {
+            Mostraraviso(el.aviso[1], dados.mensagem, 'aviso_positivo')
+        }, 1000)
+        setTimeout(()=> {
+             el.conteiner.classList.remove('active')
+        }, 2000)
+
+       
+        
 
     } catch (err) {
         console.log(err)
