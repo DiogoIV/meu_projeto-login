@@ -1,23 +1,19 @@
 import dotenv from 'dotenv'
+dotenv.config()
 import crypto from 'crypto'
+import express from 'express'
+import cors from 'cors'
+import {MongoClient} from 'mongodb'
+import nodemailer from 'nodemailer'
 
-
-const express = require('express')
 const app = express()
-
-const nodemailer = require('nodemailer')
-
-
-
-const cors = require('cors')
-const { MongoClient } = require('mongodb')
-const url = env.MONGO_URL
+const url = process.env.MONGO_URL
 const client = new MongoClient(url)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: env.EMAIL_USER,
-        pass: env.EMAIL_PASS
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 })
 let db
@@ -72,6 +68,7 @@ app.post('/login', async (req, res) => {
     const { usuario, senha } = req.body;
     console.log(usuario, senha)
     const user = await db.collection('usuarios').findOne({ usuario })
+    console.log(user)
     if (!user) {
         return res.status(404).json({ mensagem: 'Usuário não encontrado' })
     }
@@ -95,7 +92,7 @@ app.post('/recuperar_senha', async (req, res) => {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     let codigo = ''
 
-    const valores = crypto.getRandomValues(new Uint32Array(6))
+    const valores = crypto.randomBytes(6)
 
     valores.forEach(valor => {
         codigo += caracteres[valor % caracteres.length]
@@ -108,7 +105,7 @@ app.post('/recuperar_senha', async (req, res) => {
         )
 
         const mailOptions = {
-            from: 'servidordiogo157@gmail.com',
+            from: process.env.EMAIL_USER,
             to: email,
             subject: 'Recuperação de senha',
             text: `Seu código é: ${codigo}`
@@ -183,7 +180,7 @@ app.post('/redefinir_senha', async (req, res) => {
 
 
 
-app.listen(env.PORT, async () => {
+app.listen(process.env.PORT, async () => {
     await conectar()
     console.log('rodando')
 })
