@@ -1,19 +1,23 @@
+import dotenv from 'dotenv'
+import crypto from 'crypto'
+
+
 const express = require('express')
 const app = express()
 
 const nodemailer = require('nodemailer')
-import crypto from 'crypto'
+
 
 
 const cors = require('cors')
 const { MongoClient } = require('mongodb')
-const url = "mongodb://diogorodriguesdasilva156_db_user:Dingo157@ac-j8kt6t6-shard-00-00.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-01.1ulz8m0.mongodb.net:27017,ac-j8kt6t6-shard-00-02.1ulz8m0.mongodb.net:27017/?ssl=true&replicaSet=atlas-p6c5a3-shard-0&authSource=admin&appName=Cluster0"
+const url = env.MONGO_URL
 const client = new MongoClient(url)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'servidordiogo157@gmail.com',
-        pass: 'dtyo gqyw iytx yqap'
+        user: env.EMAIL_USER,
+        pass: env.EMAIL_PASS
     }
 })
 let db
@@ -179,7 +183,7 @@ app.post('/redefinir_senha', async (req, res) => {
 
 
 
-app.listen(3000, async () => {
+app.listen(env.PORT, async () => {
     await conectar()
     console.log('rodando')
 })
