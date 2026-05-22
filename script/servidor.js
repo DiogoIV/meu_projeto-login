@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import crypto from 'crypto'
+import bcrypt from 'bcrypt'
+
 import express from 'express'
 import cors from 'cors'
 import {MongoClient} from 'mongodb'
@@ -43,11 +45,16 @@ async function conectar() {
 /*Registro*/
 app.post('/usuarios', async (req, res) => {
     console.log(req.body)
+
+    const senhaHash = await bcrypt.hash(
+        req.body.senha.trim(),
+        10
+    )
     try {
         await db.collection('usuarios').insertOne({
             usuario: req.body.usuario.trim(),
             email: req.body.email.trim(),
-            senha: req.body.senha.trim()
+            senha: senhaHash
         })
 
         res.status(200).json({ mensagem: 'Usuário cadastrado' })
@@ -68,11 +75,16 @@ app.post('/login', async (req, res) => {
     const { usuario, senha } = req.body;
     console.log(usuario, senha)
     const user = await db.collection('usuarios').findOne({ usuario })
+    const senhaCorreta =
+        await bcrypt.compare(
+            senha,
+            user.senha
+    )
     console.log(user)
     if (!user) {
         return res.status(404).json({ mensagem: 'Usuário não encontrado' })
     }
-    if (senha !== user.senha) {
+    if (!senhaCorreta) {
         return res.status(401).json({ mensagem: 'Senha incorreta' })
 
     }
@@ -136,17 +148,13 @@ app.post('/token', async (req, res) => {
 /* redefinir senha*/
 
 
-
-
-
-
 app.post('/redefinir_senha', async (req, res) => {
     try {
         const { novasenha, confirmarsenha, token } = req.body
 
-        const usuario = await db.collection
-            ('usuarios').findOne({ resetToken: token })
+        const usuario = await db.collection('usuarios').findOne({ resetToken: token })
 
+           
         console.log(usuario)
         console.log(token)
 
@@ -154,17 +162,24 @@ app.post('/redefinir_senha', async (req, res) => {
             return res.status(400).json({ mensagem: 'Token Invalido' })
         }
 
-        if (novasenha !== confirmarsenha) {
-            return res.status(400).json({ mensagem: 'Senha Inválida' })
-        }
-
         if (!novasenha || !confirmarsenha) {
             return res.status(400).json({ mensagem: "Campos obrigatórios" })
         }
 
+        if (novasenha !== confirmarsenha) {
+            return res.status(400).json({ mensagem: 'Senha Inválida' })
+        }
+
+        
+
+        const senhaHash = await bcrypt.hash(
+            novasenha.trim(),
+            10
+        ) 
+
         await db.collection('usuarios').updateOne({ resetToken: token },
             {
-                $set: { senha: novasenha },
+                $set: { senha: senhaHash },
                 $unset: { resetToken: "" }
             }
         )
