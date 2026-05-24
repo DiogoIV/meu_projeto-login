@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import express from 'express'
 import cors from 'cors'
@@ -75,21 +76,35 @@ app.post('/login', async (req, res) => {
     const { usuario, senha } = req.body;
     console.log(usuario, senha)
     const user = await db.collection('usuarios').findOne({ usuario })
+    
+    console.log(user)
+    if (!user) {
+        return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+    }
+
     const senhaCorreta =
         await bcrypt.compare(
             senha,
             user.senha
     )
-    console.log(user)
-    if (!user) {
-        return res.status(404).json({ mensagem: 'Usuário não encontrado' })
-    }
+
     if (!senhaCorreta) {
         return res.status(401).json({ mensagem: 'Senha incorreta' })
 
     }
 
-    res.status(200).json({ mensagem: 'Logado com Sucesso' })
+    const token = jwt.sign(
+        {
+            id: user._id,
+            usuario: user.usuario
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '1h'
+        }
+    )
+
+    res.status(200).json({ mensagem: 'Logado com Sucesso', token })
 
 })
 
