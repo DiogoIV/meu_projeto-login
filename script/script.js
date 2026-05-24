@@ -274,6 +274,8 @@ login.button_login.addEventListener('click', async e => {
               dados.token
             )
 
+            
+
             login.conteiner_login.classList.add('active')
             alert(dados.mensagem)
             el.conteiner_perfil.style.display = 'flex'

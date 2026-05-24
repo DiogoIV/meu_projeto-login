@@ -39,12 +39,44 @@ async function conectar() {
     }
 }
 
+function autenticar(req, res, next) {
+
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+        return res.status(401).json({
+            mensagem: 'Sem token'
+        })
+    }
+
+    const token = authHeader.split(' ')[1]
+
+    try {
+
+        const user = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        )
+
+        req.user = user
+
+        next()
+
+    } catch {
+
+        return res.status(401).json({
+            mensagem: 'Token inválido'
+        })
+
+    }
+
+}
 
 
 
 
 /*Registro*/
-app.post('/usuarios', async (req, res) => {
+app.post('/usuarios',async (req, res) => {
     console.log(req.body)
 
     const senhaHash = await bcrypt.hash(
