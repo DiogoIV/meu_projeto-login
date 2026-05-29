@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 
 import express from 'express'
 import cors from 'cors'
-import {MongoClient} from 'mongodb'
+import { MongoClient } from 'mongodb'
 import nodemailer from 'nodemailer'
 
 const app = express()
@@ -76,7 +76,7 @@ function autenticar(req, res, next) {
 
 
 /*Registro*/
-app.post('/usuarios',async (req, res) => {
+app.post('/usuarios', async (req, res) => {
     console.log(req.body)
 
     const senhaHash = await bcrypt.hash(
@@ -108,7 +108,7 @@ app.post('/login', async (req, res) => {
     const { usuario, senha } = req.body;
     console.log(usuario, senha)
     const user = await db.collection('usuarios').findOne({ usuario })
-    
+
     console.log(user)
     if (!user) {
         return res.status(404).json({ mensagem: 'Usuário não encontrado' })
@@ -118,7 +118,7 @@ app.post('/login', async (req, res) => {
         await bcrypt.compare(
             senha,
             user.senha
-    )
+        )
 
     if (!senhaCorreta) {
         return res.status(401).json({ mensagem: 'Senha incorreta' })
@@ -160,7 +160,13 @@ app.post('/recuperar_senha', async (req, res) => {
     if (email_banco) {
         await db.collection('usuarios').updateOne(
             { email: email_banco.email },
-            { $set: { resetToken: codigo} }
+            {
+                $set: {
+                    resetToken: codigo,
+                    resetTokenExpira:
+                        Date.now() + 1000 * 60 * 10
+                }
+            }
         )
 
         const mailOptions = {
@@ -201,10 +207,13 @@ app.post('/redefinir_senha', async (req, res) => {
 
         const usuario = await db.collection('usuarios').findOne({ resetToken: token })
 
-           
+
         console.log(usuario)
         console.log(token)
 
+        if(Date.now() > usuario.resetTokenExpira) {
+            return res.status(400),json({mensagem: 'Token expirado'})
+        }
         if (!usuario) {
             return res.status(400).json({ mensagem: 'Token Invalido' })
         }
@@ -217,12 +226,12 @@ app.post('/redefinir_senha', async (req, res) => {
             return res.status(400).json({ mensagem: 'Senha Inválida' })
         }
 
-        
+
 
         const senhaHash = await bcrypt.hash(
             novasenha.trim(),
             10
-        ) 
+        )
 
         await db.collection('usuarios').updateOne({ resetToken: token },
             {
