@@ -105,38 +105,38 @@ app.post('/usuarios', async (req, res) => {
 /*login*/
 
 app.post('/login', async (req, res) => {
-    try {
-        const { usuario, senha } = req.body;
+  try {
+    const { usuario, senha } = req.body;
 
-        const user = await db.collection('usuarios').findOne({ usuario });
+    const user = await db.collection('usuarios').findOne({ usuario });
 
-        if (!user) {
-            return res.status(404).json({ mensagem: 'Usuário não encontrado' });
-        }
-
-        const senhaCorreta = await bcrypt.compare(senha, user.senha);
-
-        if (!senhaCorreta) {
-            return res.status(401).json({ mensagem: 'Senha incorreta' });
-        }
-
-        const token = jwt.sign(
-            {
-                id: user._id,
-                usuario: user.usuario
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '2h' }
-        );
-
-        res.status(200).json({ mensagem: 'Logado com sucesso', token });
-
-    } catch (erro) {
-        console.error(erro);
-        res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    if (!user) {
+      return res.status(404).json({ mensagem: 'Usuário não encontrado' });
     }
 
-    console.log('JWT:', process.env.JWT_SECRET)
+    const senhaCorreta = await bcrypt.compare(senha, user.senha);
+
+    if (!senhaCorreta) {
+      return res.status(401).json({ mensagem: 'Senha incorreta' });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        usuario: user.usuario
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    res.status(200).json({ mensagem: 'Logado com sucesso', token });
+
+  } catch (erro) {
+    console.error(erro);
+    res.status(500).json({ mensagem: 'Erro interno do servidor' });
+  }
+
+  console.log('JWT:', process.env.JWT_SECRET)
     console.log('MONGO:', process.env.MONGO_URL)
 });
 
@@ -211,8 +211,8 @@ app.post('/redefinir_senha', async (req, res) => {
         console.log(usuario)
         console.log(token)
 
-        if (Date.now() > usuario.resetTokenExpira) {
-            return res.status(400), json({ mensagem: 'Token expirado' })
+        if(Date.now() > usuario.resetTokenExpira) {
+            return res.status(400),json({mensagem: 'Token expirado'})
         }
         if (!usuario) {
             return res.status(400).json({ mensagem: 'Token Invalido' })
@@ -249,9 +249,9 @@ app.post('/redefinir_senha', async (req, res) => {
 })
 
 
-app.get('/perfil', autenticar, (req, res) => {
+app.get('/perfil', autenticar, (req,res) =>{
     res.status(200).json(req.user)
-
+    
 })
 
 
