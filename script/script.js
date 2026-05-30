@@ -269,7 +269,7 @@ login.button_login.addEventListener('click', async e => {
         })
     
         const dados = await res.json()
-        console.log(res.ok)
+        console.log(dados)
         if(res.ok) {
             localStorage.setItem(
               'token',
