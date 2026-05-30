@@ -149,7 +149,7 @@ register.button_register.addEventListener('click', async (ele) => {
 
 
     try {
-        const res = await fetch('http://localhost:3000/usuarios', {
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/usuarios', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -256,7 +256,7 @@ login.button_login.addEventListener('click', async e => {
     
     
     
-        const res = await fetch('http://localhost:3000/login', {
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -298,7 +298,7 @@ window.addEventListener('DOMContentLoaded', async ()=> {
 
      
 
-    const res = await fetch('http://localhost:3000/perfil', {
+    const res = await fetch('https://meu-projeto-login-1.onrender.com/perfil', {
         headers: {
             Authorization: `Bearer ${token}`
         }     
@@ -343,7 +343,7 @@ login.button_esqueci.addEventListener('click', async e => {
         aviso_login.classList.remove('aviso_active')
     }
 
-    const res = await fetch('http://localhost:3000/recuperar_senha', {
+    const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -374,7 +374,7 @@ login.validar_codigo.addEventListener('click', async ele => {
     const input_token_validar = pegartoken()
     const aviso_token = el.aviso[3]
     try {
-        const res = await fetch('http://localhost:3000/token', {
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token: input_token_validar })
@@ -443,7 +443,7 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
         }
     
         
-         const res = await fetch('http://localhost:3000/redefinir_senha', {
+         const res = await fetch('https://meu-projeto-login-1.onrender.com/redefinir_senha', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
