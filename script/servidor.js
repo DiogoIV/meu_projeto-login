@@ -132,12 +132,16 @@ app.post('/login', async (req, res) => {
         res.status(200).json({ mensagem: 'Logado com sucesso', token });
 
     } catch (erro) {
-        console.error(erro);
-        res.status(500).json({ mensagem: 'Erro interno do servidor' });
-    }
+        
+            console.error('ERRO LOGIN:', erro);
 
-    console.log('JWT:', process.env.JWT_SECRET)
-    console.log('MONGO:', process.env.MONGO_URL)
+            res.status(500).json({
+                mensagem: 'Erro interno do servidor',
+                erro: erro.message,
+                stack: erro.stack
+            });
+        }
+
 });
 
 /*Recuperar a senha*/
