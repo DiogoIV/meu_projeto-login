@@ -132,7 +132,7 @@ app.post('/login', async (req, res) => {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: '1h'
+            expiresIn: '20s'
         }
     )
 
@@ -248,6 +248,11 @@ app.post('/redefinir_senha', async (req, res) => {
 
 })
 
+
+app.get('/perfil', autenticar, (req,res) =>{
+    res.status(200).json(req.user)
+    
+})
 
 
 

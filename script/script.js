@@ -64,6 +64,7 @@ function alterarTela() {
 
 
 const register = {
+    container_form_register: document.querySelector('.form_register'),
     inputs: document.querySelectorAll('.form_register input'),
     input_usuarioRegistro: document.querySelector('.input-register #usu'),
     input_emailRegistro: document.querySelector('.input-register #email'),
@@ -273,15 +274,15 @@ login.button_login.addEventListener('click', async e => {
               'token',
               dados.token
             )
-
-            
-
-            login.conteiner_login.classList.add('active')
+            el.conteiner.classList.add('active')
             alert(dados.mensagem)
+            register.container_form_register.style.display = 'none'
             el.conteiner_perfil.style.display = 'flex'
+            el.conteiner_perfil.style.position =  'absolute'
             
         } else {
             alert(dados.mensagem)
+            localStorage.removeItem('token')
         }
         
     } catch(erro) {
@@ -289,6 +290,32 @@ login.button_login.addEventListener('click', async e => {
     }
      
 })
+
+
+window.addEventListener('DOMContentLoaded', async ()=> {
+
+    const token = localStorage.getItem('token')
+
+     
+
+    const res = await fetch('http://localhost:3000/perfil', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }     
+    })
+
+    const dados = await res.json()
+
+    if(res.ok) {
+        el.conteiner.classList.add('active')
+        register.container_form_register.style.display = 'none'
+        el.conteiner_perfil.style.display = 'flex'
+        el.conteiner_perfil.style.position =  'absolute'
+        
+    }
+    
+})
+
 
 /*esqueci a senha*/
 
@@ -393,30 +420,6 @@ function redefinirSenha() {
     })
 }
 
-
-
-/*Perfil login*/
-
-const perfil_login = {
-    usuario_bem_vindo: document.querySelector('.bem_vindo'),
-    nome_usuario: document.querySelector('.nome_usario'),
-    email_usuario: document.getElementsByClassName('email_usario')[0],
-
-    button_editar: document.querySelector('.but_editar'),
-    button_sair: document.querySelector('.but_sair')
-    
-}
-
-perfil_login.button_sair.addEventListener('click', ele => {
-    el.conteiner_perfil.style.display = 'none'
-    LimparInputs(el.forms)
-    login.conteiner_login.style.display = 'block'
-})
-
-
-
-
-
 redefinir.button_redefinir.addEventListener('click', async ele => {
     try {
         
@@ -467,6 +470,34 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
         console.log(erro, 'erro ao enviar nova senha')
     }
 }) 
+
+
+/*Perfil login*/
+
+const perfil_login = {
+    usuario_bem_vindo: document.querySelector('.bem_vindo'),
+    nome_usuario: document.querySelector('.nome_usario'),
+    email_usuario: document.getElementsByClassName('email_usario')[0],
+
+    button_editar: document.querySelector('.but_editar'),
+    button_sair: document.querySelector('.but_sair')
+    
+}
+
+
+
+perfil_login.button_sair.addEventListener('click', ele => {
+    el.conteiner_perfil.style.display = 'none'
+    LimparInputs(el.forms)
+    el.conteiner.classList.remove('active')
+    console.log(el.conteiner)
+})
+
+
+
+
+
+
 
 
 
