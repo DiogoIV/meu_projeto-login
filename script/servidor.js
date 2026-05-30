@@ -76,7 +76,7 @@ function autenticar(req, res, next) {
 
 
 /*Registro*/
-app.post('/usuarios', async (req, res) => {
+app.post('/registrar', async (req, res) => {
     console.log(req.body)
 
     const senhaHash = await bcrypt.hash(

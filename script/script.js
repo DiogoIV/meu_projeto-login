@@ -149,7 +149,7 @@ register.button_register.addEventListener('click', async (ele) => {
 
 
     try {
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/usuarios', {
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
