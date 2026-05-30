@@ -257,6 +257,7 @@ login.button_login.addEventListener('click', async e => {
     
     
         const res = await fetch('https://meu-projeto-login-1.onrender.com/login', {
+            
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
