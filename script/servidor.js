@@ -105,40 +105,37 @@ app.post('/usuarios', async (req, res) => {
 /*login*/
 
 app.post('/login', async (req, res) => {
+  try {
     const { usuario, senha } = req.body;
-    console.log(usuario, senha)
-    const user = await db.collection('usuarios').findOne({ usuario })
 
-    console.log(user)
+    const user = await db.collection('usuarios').findOne({ usuario });
+
     if (!user) {
-        return res.status(404).json({ mensagem: 'Usuário não encontrado' })
+      return res.status(404).json({ mensagem: 'Usuário não encontrado' });
     }
 
-    const senhaCorreta =
-        await bcrypt.compare(
-            senha,
-            user.senha
-        )
+    const senhaCorreta = await bcrypt.compare(senha, user.senha);
 
     if (!senhaCorreta) {
-        return res.status(401).json({ mensagem: 'Senha incorreta' })
-
+      return res.status(401).json({ mensagem: 'Senha incorreta' });
     }
 
     const token = jwt.sign(
-        {
-            id: user._id,
-            usuario: user.usuario
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: '2h'
-        }
-    )
+      {
+        id: user._id,
+        usuario: user.usuario
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
 
-    res.status(200).json({ mensagem: 'Logado com Sucesso', token })
+    res.status(200).json({ mensagem: 'Logado com sucesso', token });
 
-})
+  } catch (erro) {
+    console.error(erro);
+    res.status(500).json({ mensagem: 'Erro interno do servidor' });
+  }
+});
 
 /*Recuperar a senha*/
 
