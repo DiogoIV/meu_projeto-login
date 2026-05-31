@@ -162,7 +162,7 @@ app.post('/recuperar_senha', async (req, res) => {
         console.log("usuario encontrado:", email_banco)
 
         if (!email_banco) {
-            return res.status(404).json({ mensagem: "Email não encontrado" })
+            return res.status(404).json({ mensagem: "Email não encontrado porra" })
         }
 
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -178,8 +178,8 @@ app.post('/recuperar_senha', async (req, res) => {
             { email },
             {
                 $set: {
-                    resetToken: codigo,
-                    resetTokenExpira: Date.now() + 1000 * 60 * 10
+                    resetToken: codigo
+                    // ❌ remove resetTokenExpira
                 }
             }
         )
@@ -204,7 +204,6 @@ app.post('/recuperar_senha', async (req, res) => {
         })
     }
 })
-
 
 /*validar token */
 

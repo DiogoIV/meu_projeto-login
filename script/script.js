@@ -332,8 +332,18 @@ login.inputs_esqueciSenha.addEventListener('input', el => {
     validarformulario(el.target, regexs.regx_email)
 })
 
-login.button_esqueci.addEventListener('click', async e => {
+login.button_esqueci.addEventListener('click', async (e) => {
     try {
+        e.preventDefault()
+
+        const email_recuperar = login.inputs_esqueciSenha.value
+        const aviso_login = el.aviso[2]
+
+        if (!regexs.regx_email.test(email_recuperar)) {
+            Mostraraviso(aviso_login, 'Email inválido', 'aviso_negativo')
+            return
+        }
+
         const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -347,13 +357,20 @@ login.button_esqueci.addEventListener('click', async e => {
         console.log("DADOS:", dados)
 
         if (!res.ok) {
-            Mostraraviso(el.aviso[2], dados.mensagem || 'Erro ao enviar email', 'aviso_negativo')
+            Mostraraviso(
+                aviso_login,
+                dados.mensagem || 'Erro ao enviar email',
+                'aviso_negativo'
+            )
             return
         }
 
-        Mostraraviso(el.aviso[2], dados.mensagem || 'Código enviado!', 'aviso_positivo')
+        Mostraraviso(
+            aviso_login,
+            dados.mensagem || 'Código enviado!',
+            'aviso_positivo'
+        )
 
-        // só depois de mostrar feedback
         setTimeout(() => {
             el.conteiner.classList.remove('active_token')
             el.conteiner.classList.add('active_validar_token')
@@ -361,11 +378,13 @@ login.button_esqueci.addEventListener('click', async e => {
 
     } catch (err) {
         console.log("ERRO FETCH:", err)
-        Mostraraviso(el.aviso[2], 'Erro de conexão com servidor', 'aviso_negativo')
-
+        Mostraraviso(
+            el.aviso[2],
+            'Erro de conexão com servidor',
+            'aviso_negativo'
+        )
     }
-}
-)
+})
 /* validar token*/
 
 function pegartoken() {
