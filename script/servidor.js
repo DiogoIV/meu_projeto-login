@@ -148,7 +148,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/recuperar_senha', async (req, res) => {
-
+    console.log("chegou na rota")
     const { email } = req.body
     const email_banco = await db.collection('usuarios').findOne({ email })
 

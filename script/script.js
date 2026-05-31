@@ -15,13 +15,13 @@ const regexs = {
     regx_senha: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/
 }
 
-function Mostraraviso (aviso, aviso_texto, estado) {
+function Mostraraviso(aviso, aviso_texto, estado) {
     aviso.style.color = ''
-    
-    if(estado === 'aviso_negativo') {
+
+    if (estado === 'aviso_negativo') {
         aviso.classList.add('aviso_active')
         aviso.textContent = aviso_texto
-    } else if(estado === 'aviso_desativar') {
+    } else if (estado === 'aviso_desativar') {
         aviso.classList.remove('aviso_active')
     } else if (estado === 'aviso_positivo') {
         aviso.classList.add('aviso_active')
@@ -29,7 +29,7 @@ function Mostraraviso (aviso, aviso_texto, estado) {
         aviso.textContent = aviso_texto
     }
 
-    
+
 }
 
 function LimparInputs(forms) {
@@ -138,11 +138,11 @@ register.button_register.addEventListener('click', async (ele) => {
 
     console.log(senhaconfirm)
     if (!usuariok || !emailok || !senhaok || !senhaconfirm) {
-        return Mostraraviso(el.aviso[1],'preencha os dados', 'aviso_negativo')
+        return Mostraraviso(el.aviso[1], 'preencha os dados', 'aviso_negativo')
     }
 
 
-    if(!register.input_checkbox_register.checked) {
+    if (!register.input_checkbox_register.checked) {
         return Mostraraviso(el.aviso[1], 'Marque os termos', 'aviso_negativo')
     }
 
@@ -174,15 +174,15 @@ register.button_register.addEventListener('click', async (ele) => {
             return Mostraraviso(el.aviso[1], dados.mensagem, 'aviso_negativo')
 
         }
-        setTimeout(()=> {
+        setTimeout(() => {
             Mostraraviso(el.aviso[1], dados.mensagem, 'aviso_positivo')
         }, 1000)
-        setTimeout(()=> {
-             el.conteiner.classList.remove('active')
+        setTimeout(() => {
+            el.conteiner.classList.remove('active')
         }, 2000)
 
-       
-        
+
+
 
     } catch (err) {
         console.log(err)
@@ -238,12 +238,12 @@ function alterarinput() {
 
 login.button_login.addEventListener('click', async e => {
     try {
-        
+
         e.preventDefault()
         const usuario = login.inputs_usuarioLogin.value;
         const senha = login.inputs_usenhaLogin.value;
         const aviso_login = el.aviso[0]
-    
+
         if (!regexs.regx_usuario.test(usuario)) {
             aviso_login.classList.add('aviso_active')
             return aviso_login.textContent = 'Usuario Invalido'
@@ -251,13 +251,13 @@ login.button_login.addEventListener('click', async e => {
         if (!regexs.regx_senha.test(senha)) {
             aviso_login.classList.add('aviso_active')
             return aviso_login.textContent = 'Senha Invalida'
-    
+
         }
-    
-    
-    
+
+
+
         const res = await fetch('https://meu-projeto-login-1.onrender.com/login', {
-            
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -267,54 +267,54 @@ login.button_login.addEventListener('click', async e => {
             }
             )
         })
-    
+
         const dados = await res.json()
         console.log(dados)
-        if(res.ok) {
+        if (res.ok) {
             localStorage.setItem(
-              'token',
-              dados.token
+                'token',
+                dados.token
             )
             el.conteiner.classList.add('active')
             alert(dados.mensagem)
             register.container_form_register.style.display = 'none'
             el.conteiner_perfil.style.display = 'flex'
-            el.conteiner_perfil.style.position =  'absolute'
-            
+            el.conteiner_perfil.style.position = 'absolute'
+
         } else {
             alert(dados.mensagem)
             localStorage.removeItem('token')
         }
-        
-    } catch(erro) {
+
+    } catch (erro) {
         console.log(erro, 'Erro ao logar')
     }
-     
+
 })
 
 
-window.addEventListener('DOMContentLoaded', async ()=> {
+window.addEventListener('DOMContentLoaded', async () => {
 
     const token = localStorage.getItem('token')
 
-     
+
 
     const res = await fetch('https://meu-projeto-login-1.onrender.com/perfil', {
         headers: {
             Authorization: `Bearer ${token}`
-        }     
+        }
     })
 
     const dados = await res.json()
 
-    if(res.ok) {
+    if (res.ok) {
         el.conteiner.classList.add('active')
         register.container_form_register.style.display = 'none'
         el.conteiner_perfil.style.display = 'flex'
-        el.conteiner_perfil.style.position =  'absolute'
-        
+        el.conteiner_perfil.style.position = 'absolute'
+
     }
-    
+
 })
 
 
@@ -333,40 +333,48 @@ login.inputs_esqueciSenha.addEventListener('input', el => {
 })
 
 login.button_esqueci.addEventListener('click', async e => {
-    e.preventDefault()
-    const email_recuperar = login.inputs_esqueciSenha.value
-    const aviso_login = el.aviso[2]
+    try {
+        console.log('cliclou no botao esqueci')
+        e.preventDefault()
+        const email_recuperar = login.inputs_esqueciSenha.value
+        const aviso_login = el.aviso[2]
 
-    if (!regexs.regx_email.test(email_recuperar)) {
-        aviso_login.classList.add('aviso_active')
-        return aviso_login.textContent = 'Email envalido'
-    } else {
-        aviso_login.classList.remove('aviso_active')
-    }
+        if (!regexs.regx_email.test(email_recuperar)) {
+            aviso_login.classList.add('aviso_active')
+            return aviso_login.textContent = 'Email envalido'
+        } else {
+            aviso_login.classList.remove('aviso_active')
+        }
 
-    const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email_recuperar
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email_recuperar
+            })
         })
-    })
-    const dados = await res.json()
-    alert(dados.mensagem)
-    if (res.ok) {
-        el.conteiner.classList.remove('active_token')
-        el.conteiner.classList.add('active_validar_token')
 
+        const dados = await res.json()
+        if (res.ok) {
+            el.conteiner.classList.remove('active_token')
+            el.conteiner.classList.add('active_validar_token')
+
+        } else {
+            alert(dados.mensagem)
+        }
+    } catch (err) {
+        console.log(`erro em esquecia senha${err}`)
     }
+
 })
 
 
 /* validar token*/
 
-function pegartoken () {
-    const input_token = login.input_token.value 
+function pegartoken() {
+    const input_token = login.input_token.value
     return input_token
 }
 
@@ -423,54 +431,54 @@ function redefinirSenha() {
 
 redefinir.button_redefinir.addEventListener('click', async ele => {
     try {
-        
+
         ele.preventDefault()
-    
+
         const input_novasenha = redefinir.input_novasenha
         const input_confirmarsenha = redefinir.input_confirmarsenha
         const input_token_redefinir = pegartoken()
         const aviso4 = el.aviso[4]
-    
+
         const inputsenhaok = validarformulario(input_novasenha, regexs.regx_senha)
         const inputconfirmarsenhaok = validarConfirmaSenha(redefinir.input_novasenha, redefinir.input_confirmarsenha)
-    
-    
-        if(!inputsenhaok|| !inputconfirmarsenhaok) {
+
+
+        if (!inputsenhaok || !inputconfirmarsenhaok) {
             aviso4.classList.add('aviso_active')
             return aviso4.textContent = 'Preencha os dados Coretamente'
-            
+
         } else {
             aviso4.classList.remove('aviso_active')
         }
-    
-        
-         const res = await fetch('https://meu-projeto-login-1.onrender.com/redefinir_senha', {
+
+
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/redefinir_senha', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 novasenha: input_novasenha.value,
                 confirmarsenha: input_confirmarsenha.value,
                 token: input_token_redefinir
             })
-        }) 
+        })
         const dados = await res.json()
-        if(res.ok) {
+        if (res.ok) {
             aviso4.classList.add('aviso_active')
             aviso4.style.color = 'green'
-            aviso4.textContent = dados.mensagem || 'Senha redefinida com sucesso'       
-            setTimeout( ()=> {
+            aviso4.textContent = dados.mensagem || 'Senha redefinida com sucesso'
+            setTimeout(() => {
                 el.conteiner.classList.remove('active_redefinir_senha')
-            },1000)
-            
+            }, 1000)
+
         } else {
             aviso4.classList.add('aviso_active')
             aviso4.textContent = dados.mensagem || 'Erro ao redefinir senha'
-        } 
-    
-    } catch(erro) {
+        }
+
+    } catch (erro) {
         console.log(erro, 'erro ao enviar nova senha')
     }
-}) 
+})
 
 
 /*Perfil login*/
@@ -482,7 +490,7 @@ const perfil_login = {
 
     button_editar: document.querySelector('.but_editar'),
     button_sair: document.querySelector('.but_sair')
-    
+
 }
 
 
