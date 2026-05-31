@@ -491,6 +491,7 @@ perfil_login.button_sair.addEventListener('click', ele => {
     el.conteiner_perfil.style.display = 'none'
     LimparInputs(el.forms)
     el.conteiner.classList.remove('active')
+    register.container_form_register.style.display = 'block'
     console.log(el.conteiner)
 })
 
