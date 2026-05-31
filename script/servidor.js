@@ -185,7 +185,7 @@ app.post('/recuperar_senha', async (req, res) => {
         )
 
         const resend = new Resend(process.env.RESEND_API_KEY)
-
+        console.log(email)
         await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
