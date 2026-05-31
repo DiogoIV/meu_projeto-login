@@ -265,8 +265,12 @@ const PORTA = process.env.PORT || 3000
 app.listen(PORTA, async () => {
     try {
         await conectar()
+
+        if (!db) throw new Error("DB não inicializado")
+
         console.log('Mongo conectado')
         console.log('rodando')
+
     } catch (err) {
         console.error('Erro Mongo:', err)
         process.exit(1)
