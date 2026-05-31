@@ -3,7 +3,7 @@ dotenv.config()
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
+import { Resend } from 'resend'
 import express from 'express'
 import cors from 'cors'
 import { MongoClient } from 'mongodb'
@@ -183,6 +183,15 @@ app.post('/recuperar_senha', async (req, res) => {
                 }
             }
         )
+
+        const resend = new Resend(process.env.RESEND_API_KEY)
+
+        await resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: email,
+            subject: 'Recuperação de senha',
+            text: `Seu código é: ${codigo}`
+        })
 
         console.log("TOKEN GERADO:", codigo)
 
