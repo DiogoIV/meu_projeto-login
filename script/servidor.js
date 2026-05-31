@@ -178,7 +178,8 @@ app.post('/recuperar_senha', async (req, res) => {
             { email },
             {
                 $set: {
-                    resetToken: codigo
+                    resetToken: codigo,
+                    resetTokenExpira: Date.now() + 1000 * 60 * 10
                 }
             }
         )
