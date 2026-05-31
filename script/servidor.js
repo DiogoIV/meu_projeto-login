@@ -162,30 +162,32 @@ app.post('/recuperar_senha', async (req, res) => {
         console.log("usuario encontrado:", email_banco)
 
         if (!email_banco) {
-            return res.status(404).json({ mensagem: "Email não encontrado porraaaa222" })
+            return res.status(404).json({ mensagem: "Email não encontrado mds" })
         }
 
-        
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        let codigo = ''
+
+        const valores = crypto.randomBytes(6)
+
+        valores.forEach(valor => {
+            codigo += caracteres[valor % caracteres.length]
+        })
 
         await db.collection('usuarios').updateOne(
             { email },
             {
                 $set: {
                     resetToken: codigo
-                    // ❌ remove resetTokenExpira
                 }
             }
         )
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Recuperação de senha',
-            text: `Seu código é: ${codigo}`
-        })
+        console.log("TOKEN GERADO:", codigo)
 
         return res.status(200).json({
-            mensagem: "Token enviado para seu email"
+            mensagem: "Token gerado com sucesso",
+            token: codigo
         })
 
     } catch (err) {
