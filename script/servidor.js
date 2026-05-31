@@ -3,7 +3,6 @@ dotenv.config()
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { Resend } from 'resend'
 import express from 'express'
 import cors from 'cors'
 import { MongoClient } from 'mongodb'
@@ -19,7 +18,18 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 })
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("EMAIL ERRO:", error)
+    } else {
+        console.log("EMAIL PRONTO PRA ENVIO")
+    }
+})
 let db
+
+console.log("EMAIL:", process.env.EMAIL_USER)
+console.log("PASS:", process.env.EMAIL_PASS)
 
 app.use(express.json())
 app.use(cors())
@@ -149,62 +159,46 @@ app.post('/login', async (req, res) => {
 
 app.post('/recuperar_senha', async (req, res) => {
     try {
-        console.log("chegou na rota")
-
         const { email } = req.body
 
         if (!email) {
-            return res.status(400).json({ mensagem: "Email obrigatório" })
+            return res.status(400).json({ mensagem: 'Email obrigatório' })
         }
 
-        const email_banco = await db.collection('usuarios').findOne({ email })
+        const usuario = await db.collection('usuarios').findOne({ email })
 
-        console.log("usuario encontrado:", email_banco)
-
-        if (!email_banco) {
-            return res.status(404).json({ mensagem: "Email não encontrado mds" })
+        if (!usuario) {
+            return res.status(404).json({ mensagem: 'Email não encontrado' })
         }
 
-        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        let codigo = ''
-
-        const valores = crypto.randomBytes(6)
-
-        valores.forEach(valor => {
-            codigo += caracteres[valor % caracteres.length]
-        })
+        const codigo = Math.floor(100000 + Math.random() * 900000).toString()
 
         await db.collection('usuarios').updateOne(
             { email },
             {
                 $set: {
                     resetToken: codigo,
-                    resetTokenExpira: Date.now() + 1000 * 60 * 10
+                    resetTokenExpira: Date.now() + 10 * 60 * 1000
                 }
             }
         )
 
-        const resend = new Resend(process.env.RESEND_API_KEY)
-        console.log(email)
-        await resend.emails.send({
-            from: 'onboarding@resend.dev',
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_USER,
             to: email,
             subject: 'Recuperação de senha',
             text: `Seu código é: ${codigo}`
         })
-
-        console.log("TOKEN GERADO:", codigo)
-
+        console.log("EMAIL INFO:", info)
         return res.status(200).json({
-            mensagem: "Token gerado com sucesso",
-            token: codigo
+            mensagem: 'Token enviado para seu email'
         })
 
     } catch (err) {
-        console.error("ERRO RECUPERAR SENHA:", err)
+        console.error(err)
 
         return res.status(500).json({
-            mensagem: "Erro interno",
+            mensagem: 'Erro interno',
             erro: err.message
         })
     }
@@ -272,7 +266,12 @@ app.post('/redefinir_senha', async (req, res) => {
 
     } catch (erro) {
         console.log(erro, 'Erro Interno')
-    }
+
+        return res.status(500).json({
+            mensagem: 'Erro interno',
+            erro: erro.message
+    })
+}
 
 })
 
