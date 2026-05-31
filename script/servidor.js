@@ -162,17 +162,10 @@ app.post('/recuperar_senha', async (req, res) => {
         console.log("usuario encontrado:", email_banco)
 
         if (!email_banco) {
-            return res.status(404).json({ mensagem: "Email não encontrado porra" })
+            return res.status(404).json({ mensagem: "Email não encontrado porraaaa222" })
         }
 
-        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        let codigo = ''
-
-        const valores = crypto.randomBytes(6)
-
-        valores.forEach(valor => {
-            codigo += caracteres[valor % caracteres.length]
-        })
+        
 
         await db.collection('usuarios').updateOne(
             { email },
