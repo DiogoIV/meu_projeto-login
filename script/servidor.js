@@ -215,11 +215,13 @@ app.post('/redefinir_senha', async (req, res) => {
         console.log(usuario)
         console.log(token)
 
-        if (Date.now() > usuario.resetTokenExpira) {
-            return res.status(400), json({ mensagem: 'Token expirado' })
-        }
+        
         if (!usuario) {
             return res.status(400).json({ mensagem: 'Token Invalido' })
+        }
+
+        if (Date.now() > usuario.resetTokenExpira) {
+            return res.status(400).json({ mensagem: 'Token expirado' })
         }
 
         if (!novasenha || !confirmarsenha) {
@@ -258,9 +260,15 @@ app.get('/perfil', autenticar, (req, res) => {
 
 })
 
+const PORTA = process.env.PORT || 3000
 
-
-app.listen(process.env.PORT, async () => {
-    await conectar()
-    console.log('rodando')
+app.listen(PORTA, async () => {
+    try {
+        await conectar()
+        console.log('Mongo conectado')
+        console.log('rodando')
+    } catch (err) {
+        console.error('Erro Mongo:', err)
+        process.exit(1)
+    }
 })
