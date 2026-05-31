@@ -345,6 +345,7 @@ login.button_esqueci.addEventListener('click', async e => {
         } else {
             aviso_login.classList.remove('aviso_active')
         }
+        console.log(email_recuperar)
 
         const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
             method: 'POST',
@@ -354,7 +355,9 @@ login.button_esqueci.addEventListener('click', async e => {
             body: JSON.stringify({
                 email: email_recuperar
             })
-        })
+        }) 
+
+         
 
         const dados = await res.json()
         if (res.ok) {

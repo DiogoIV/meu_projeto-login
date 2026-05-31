@@ -132,59 +132,92 @@ app.post('/login', async (req, res) => {
         res.status(200).json({ mensagem: 'Logado com sucesso', token });
 
     } catch (erro) {
-        
-            console.error('ERRO LOGIN:', erro);
 
-            res.status(500).json({
-                mensagem: 'Erro interno do servidor',
-                erro: erro.message,
-                stack: erro.stack
-            });
-        }
+        console.error('ERRO LOGIN:', erro);
+
+        res.status(500).json({
+            mensagem: 'Erro interno do servidor',
+            erro: erro.message,
+            stack: erro.stack
+        });
+    }
 
 });
 
 /*Recuperar a senha*/
 
+/* app.post('/recuperar_senha', async (req, res) => {
+    console.log('🔥 CHEGOU NA ROTA');
+
+    try {
+        const { email } = req.body;
+
+        console.log('EMAIL RECEBIDO:', email);
+
+        const email_banco = await db.collection('usuarios').findOne({ email });
+
+        console.log('USUARIO ENCONTRADO:', email_banco);
+
+        return res.status(200).json({
+            mensagem: 'ROTA FUNCIONOU',
+            email_recebido: email,
+            usuario: email_banco
+        });
+
+    } catch (err) {
+        console.log('ERRO NA ROTA:', err);
+        return res.status(500).json({
+            mensagem: 'ERRO INTERNO',
+            erro: err.message
+        });
+    }
+}); */
 
 app.post('/recuperar_senha', async (req, res) => {
-    console.log("chegou na rota")
-    const { email } = req.body
-    const email_banco = await db.collection('usuarios').findOne({ email })
+    try {
+        console.log("chegou na rota")
+        const {email} = req.body
+        
+        const email_banco = await db.collection('usuarios').findOne({ email })
+        console.log(`email do banco enviado${email_banco}`)
 
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let codigo = ''
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        let codigo = ''
 
-    const valores = crypto.randomBytes(6)
+        const valores = crypto.randomBytes(6)
 
-    valores.forEach(valor => {
-        codigo += caracteres[valor % caracteres.length]
-    })
+        valores.forEach(valor => {
+            codigo += caracteres[valor % caracteres.length]
+        })
 
-    if (email_banco) {
-        await db.collection('usuarios').updateOne(
-            { email: email_banco.email },
-            {
-                $set: {
-                    resetToken: codigo,
-                    resetTokenExpira:
-                        Date.now() + 1000 * 60 * 10
+        if (email_banco) {
+            await db.collection('usuarios').updateOne(
+                { email: email_banco.email },
+                {
+                    $set: {
+                        resetToken: codigo,
+                        resetTokenExpira:
+                            Date.now() + 1000 * 60 * 10
+                    }
                 }
+            )
+
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Recuperação de senha',
+                text: `Seu código é: ${codigo}`
             }
-        )
+            await transporter.sendMail(mailOptions)
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Recuperação de senha',
-            text: `Seu código é: ${codigo}`
+            return res.status(200).json({ mensagem: 'Token enviado para seu email' })
+        } else {
+            return res.status(404).json({ mensagem: 'Email não encontrado AAAAAA' })
         }
-        await transporter.sendMail(mailOptions)
-
-        return res.status(200).json({ mensagem: 'Token enviado para seu email' })
-    } else {
-        return res.status(404).json({ mensagem: 'Email não encontrado' })
+    } catch (err) {
+        console.log('Erro na rota esqueci senha', err)
     }
+
 })
 
 
@@ -215,7 +248,7 @@ app.post('/redefinir_senha', async (req, res) => {
         console.log(usuario)
         console.log(token)
 
-        
+
         if (!usuario) {
             return res.status(400).json({ mensagem: 'Token Invalido' })
         }
