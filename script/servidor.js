@@ -146,65 +146,57 @@ app.post('/login', async (req, res) => {
 
 /*Recuperar a senha*/
 
-/* app.post('/recuperar_senha', async (req, res) => {
-    console.log("🔥 CHEGOU NA ROTA")
-
-    try {
-        const { email } = req.body
-
-        console.log("EMAIL RECEBIDO:", email)
-
-        const email_banco = await db.collection('usuarios').findOne({ email })
-
-        console.log("USUARIO ENCONTRADO:", email_banco)
-
-        if (!email_banco) {
-            return res.status(404).json({
-                mensagem: "Email não encontrado"
-            })
-        }
-
-        return res.status(200).json({
-            mensagem: "EMAIL OK (DEBUG FUNCIONANDO)"
-        })
-
-    } catch (err) {
-        console.log("ERRO REAL:", err)
-
-        return res.status(500).json({
-            mensagem: "Erro interno",
-            erro: err.message
-        })
-    }
-}) */
 
 app.post('/recuperar_senha', async (req, res) => {
-    console.log("🔥 CHEGOU NA ROTA")
-
     try {
+        console.log("chegou na rota")
+
         const { email } = req.body
 
-        if(!email) {
-            return res.status(400).json('Erro no enviar o email')
+        if (!email) {
+            return res.status(400).json({ mensagem: "Email obrigatório" })
         }
-        console.log("EMAIL RECEBIDO:", email)
 
         const email_banco = await db.collection('usuarios').findOne({ email })
 
-        console.log("USUARIO ENCONTRADO:", email_banco)
+        console.log("usuario encontrado:", email_banco)
 
         if (!email_banco) {
-            return res.status(404).json({
-                mensagem: "Email não encontrado"
-            })
+            return res.status(404).json({ mensagem: "Email não encontrado" })
         }
 
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        let codigo = ''
+
+        const valores = crypto.randomBytes(6)
+
+        valores.forEach(valor => {
+            codigo += caracteres[valor % caracteres.length]
+        })
+
+        await db.collection('usuarios').updateOne(
+            { email },
+            {
+                $set: {
+                    resetToken: codigo,
+                    resetTokenExpira: Date.now() + 1000 * 60 * 10
+                }
+            }
+        )
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Recuperação de senha',
+            text: `Seu código é: ${codigo}`
+        })
+
         return res.status(200).json({
-            mensagem: "EMAIL OK (DEBUG FUNCIONANDO)"
+            mensagem: "Token enviado para seu email"
         })
 
     } catch (err) {
-        console.log("ERRO REAL:", err)
+        console.error("ERRO RECUPERAR SENHA:", err)
 
         return res.status(500).json({
             mensagem: "Erro interno",

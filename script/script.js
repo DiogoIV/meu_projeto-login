@@ -334,47 +334,38 @@ login.inputs_esqueciSenha.addEventListener('input', el => {
 
 login.button_esqueci.addEventListener('click', async e => {
     try {
-        console.log('cliclou no botao esqueci')
-        e.preventDefault()
-        const email_recuperar = login.inputs_esqueciSenha.value
-        const aviso_login = el.aviso[2]
-
-        if (!regexs.regx_email.test(email_recuperar)) {
-            aviso_login.classList.add('aviso_active')
-            return aviso_login.textContent = 'Email envalido'
-        } else {
-            aviso_login.classList.remove('aviso_active')
-        }
-        console.log(email_recuperar)
-
         const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email_recuperar
-            })
-        }) 
-
-         
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email_recuperar })
+        })
 
         const dados = await res.json()
-        console.log(dados)
-        if (res.ok) {
+
+        console.log("STATUS:", res.status)
+        console.log("RES OK:", res.ok)
+        console.log("DADOS:", dados)
+
+        if (!res.ok) {
+            Mostraraviso(el.aviso[2], dados.mensagem || 'Erro ao enviar email', 'aviso_negativo')
+            return
+        }
+
+        Mostraraviso(el.aviso[2], dados.mensagem || 'Código enviado!', 'aviso_positivo')
+
+        // só depois de mostrar feedback
+        setTimeout(() => {
             el.conteiner.classList.remove('active_token')
             el.conteiner.classList.add('active_validar_token')
+        }, 800)
 
-        } else {
-            alert(dados.mensagem)
-        }
     } catch (err) {
-        console.log(`erro em esquecia senha${err}`)
+        console.log("ERRO FETCH:", err)
+        Mostraraviso(el.aviso[2], 'Erro de conexão com servidor', 'aviso_negativo')
+
     }
-
-})
-
-
+}
+)
 /* validar token*/
 
 function pegartoken() {
