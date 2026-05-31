@@ -176,8 +176,8 @@ app.post('/login', async (req, res) => {
 app.post('/recuperar_senha', async (req, res) => {
     try {
         console.log("chegou na rota")
-        const {email} = req.body
-        
+        const { email } = req.body
+
         const email_banco = await db.collection('usuarios').findOne({ email })
         console.log(`email do banco enviado${email_banco}`)
 
@@ -216,6 +216,10 @@ app.post('/recuperar_senha', async (req, res) => {
         }
     } catch (err) {
         console.log('Erro na rota esqueci senha', err)
+        return res.status(500).json({
+            mensagem: 'Erro interno',
+            erro: err.message
+        })
     }
 
 })
