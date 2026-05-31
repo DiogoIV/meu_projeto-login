@@ -360,6 +360,7 @@ login.button_esqueci.addEventListener('click', async e => {
          
 
         const dados = await res.json()
+        console.log(dados)
         if (res.ok) {
             el.conteiner.classList.remove('active_token')
             el.conteiner.classList.add('active_validar_token')
