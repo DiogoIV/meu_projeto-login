@@ -344,7 +344,7 @@ login.button_esqueci.addEventListener('click', async (e) => {
             return
         }
 
-        const res = await fetch('http://localhost:3000/recuperar_senha', {
+        const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email_recuperar })
