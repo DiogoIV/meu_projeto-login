@@ -149,7 +149,7 @@ register.button_register.addEventListener('click', async (ele) => {
 
 
     try {
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/registrar', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -256,7 +256,7 @@ login.button_login.addEventListener('click', async e => {
 
 
 
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/login', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
 
             method: 'POST',
             headers: {
@@ -299,7 +299,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 
 
-    const res = await fetch('https://meu-projeto-login-1.onrender.com/perfil', {
+    const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -344,7 +344,7 @@ login.button_esqueci.addEventListener('click', async (e) => {
             return
         }
 
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email_recuperar })
@@ -397,7 +397,7 @@ login.validar_codigo.addEventListener('click', async ele => {
     const input_token_validar = pegartoken()
     const aviso_token = el.aviso[3]
     try {
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/token', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token: input_token_validar })
@@ -466,7 +466,7 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
         }
 
 
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/redefinir_senha', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
