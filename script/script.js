@@ -256,7 +256,7 @@ login.button_login.addEventListener('click', async e => {
 
 
 
-        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app/login', {
 
             method: 'POST',
             headers: {
@@ -299,7 +299,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 
 
-    const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
+    const res = await fetch('https://meuprojeto-login-production.up.railway.app/perfil', {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -344,7 +344,7 @@ login.button_esqueci.addEventListener('click', async (e) => {
             return
         }
 
-        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app/recuperar_senha', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email_recuperar })
@@ -397,7 +397,7 @@ login.validar_codigo.addEventListener('click', async ele => {
     const input_token_validar = pegartoken()
     const aviso_token = el.aviso[3]
     try {
-        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token: input_token_validar })
@@ -466,7 +466,7 @@ redefinir.button_redefinir.addEventListener('click', async ele => {
         }
 
 
-        const res = await fetch('https://meuprojeto-login-production.up.railway.app', {
+        const res = await fetch('https://meuprojeto-login-production.up.railway.app/redefinir_senha', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

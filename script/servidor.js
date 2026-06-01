@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import express from 'express'
 import cors from 'cors'
+
 import { MongoClient } from 'mongodb'
 import nodemailer from 'nodemailer'
 
@@ -33,7 +34,9 @@ console.log("EMAIL:", process.env.EMAIL_USER)
 console.log("PASS:", process.env.EMAIL_PASS)
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: 'https://meu-projeto-login.vercel.app'
+}))
 
 async function conectar() {
     try {
