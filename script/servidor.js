@@ -173,7 +173,7 @@ app.post('/recuperar_senha', async (req, res) => {
             
 
             return res.status(404).json({
-                mensagem: 'Email não encontrado'
+                mensagem: 'Email não encontrado@'
             })
         }
 
