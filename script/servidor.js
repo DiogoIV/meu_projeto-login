@@ -18,6 +18,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 })
+console.log(transporter)
 
 transporter.verify((error, success) => {
     if (error) {
@@ -158,6 +159,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/recuperar_senha', async (req, res) => {
+    
     try {
         const { email } = req.body
 
@@ -168,7 +170,11 @@ app.post('/recuperar_senha', async (req, res) => {
         const usuario = await db.collection('usuarios').findOne({ email })
 
         if (!usuario) {
-            return res.status(404).json({ mensagem: 'Email não encontrado' })
+            
+
+            return res.status(404).json({
+                mensagem: 'Email não encontrado'
+            })
         }
 
         const codigo = Math.floor(100000 + Math.random() * 900000).toString()
@@ -189,7 +195,7 @@ app.post('/recuperar_senha', async (req, res) => {
             subject: 'Recuperação de senha',
             text: `Seu código é: ${codigo}`
         })
-        console.log("EMAIL INFO:", info)
+        
         return res.status(200).json({
             mensagem: 'Token enviado para seu email'
         })
@@ -270,8 +276,8 @@ app.post('/redefinir_senha', async (req, res) => {
         return res.status(500).json({
             mensagem: 'Erro interno',
             erro: erro.message
-    })
-}
+        })
+    }
 
 })
 

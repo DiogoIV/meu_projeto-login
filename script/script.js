@@ -344,7 +344,7 @@ login.button_esqueci.addEventListener('click', async (e) => {
             return
         }
 
-        const res = await fetch('https://meu-projeto-login-1.onrender.com/recuperar_senha', {
+        const res = await fetch('http://localhost:3000/recuperar_senha', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email_recuperar })
@@ -352,9 +352,7 @@ login.button_esqueci.addEventListener('click', async (e) => {
 
         const dados = await res.json()
 
-        console.log("STATUS:", res.status)
-        console.log("RES OK:", res.ok)
-        console.log("DADOS:", dados)
+        
 
         if (!res.ok) {
             Mostraraviso(
@@ -365,6 +363,8 @@ login.button_esqueci.addEventListener('click', async (e) => {
             return
         }
 
+
+        
         Mostraraviso(
             aviso_login,
             dados.mensagem || 'Código enviado!',
