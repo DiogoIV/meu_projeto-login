@@ -34,9 +34,16 @@ console.log("EMAIL:", process.env.EMAIL_USER)
 console.log("PASS:", process.env.EMAIL_PASS)
 
 app.use(express.json())
+
 app.use(cors({
-    origin: 'https://meu-projeto-login.vercel.app'
+    origin: '*'
 }))
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+    next()
+})
 
 async function conectar() {
     try {
