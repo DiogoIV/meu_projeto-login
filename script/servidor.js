@@ -5,11 +5,18 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import express from 'express'
 import cors from 'cors'
+
+
+import cors from 'cors'
+
 app.use(cors({
-  origin: 'https://meu-projeto-login.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: 'https://meu-projeto-login-dagm7tkix-diogoivs-projects.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
+
+app.options('*', cors())
+app.use(express.json())
 
 import { MongoClient } from 'mongodb'
 import nodemailer from 'nodemailer'
@@ -38,7 +45,6 @@ let db
 console.log("EMAIL:", process.env.EMAIL_USER)
 console.log("PASS:", process.env.EMAIL_PASS)
 
-app.use(express.json())
 
 
 
