@@ -1,27 +1,31 @@
-import dotenv from 'dotenv'
-dotenv.config()
-import crypto from 'crypto'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
-import cors from 'cors'
+const app = express()
 
+// 1. CORS primeiro (antes das rotas)
 app.use(cors({
   origin: 'https://meu-projeto-login-dagm7tkix-diogoivs-projects.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
+// 2. Preflight OPTIONS
 app.options('*', cors())
+
+// 3. JSON parser
 app.use(express.json())
 
+// 4. depois suas libs
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { MongoClient } from 'mongodb'
 import nodemailer from 'nodemailer'
 
-const app = express()
+
 const url = process.env.MONGO_URL
 const client = new MongoClient(url)
 const transporter = nodemailer.createTransport({
