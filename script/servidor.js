@@ -4,12 +4,12 @@ import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import express from 'express'
-/* import cors from 'cors' */
-res.header('Access-Control-Allow-Origin', 'https://meu-projeto-login.vercel.app')
-
-res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-
-res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+import cors from 'cors'
+app.use(cors({
+  origin: 'https://meu-projeto-login.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 import { MongoClient } from 'mongodb'
 import nodemailer from 'nodemailer'
