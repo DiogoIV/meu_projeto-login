@@ -11,6 +11,7 @@ app.use(cors({
   origin: 'https://meu-projeto-login-dagm7tkix-diogoivs-projects.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
+  
 }))
 
 // 2. Preflight OPTIONS
